@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="FitnessTracker.API/FitnessTracker.API.csproj" />
+  <Project Path="FitnessTracker.Business/FitnessTracker.Business.csproj" />
+  <Project Path="FitnessTracker.Core/FitnessTracker.Core.csproj" />
+  <Project Path="FitnessTracker.DataAccess/FitnessTracker.DataAccess.csproj" />
+</Solution>
