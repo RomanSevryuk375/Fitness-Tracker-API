@@ -12,6 +12,10 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 
         builder.Property(t => t.Id)
             .HasColumnType("uuid")
+            .HasConversion(
+                v => Guid.Parse(v),
+                v => v.ToString()
+            )
             .HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(x => x.Login);

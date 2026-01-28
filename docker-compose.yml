@@ -35,6 +35,27 @@ services:
         timeout: 20s
         retries: 3
 
+  fitnesstracker.api:
+    image: ${DOCKER_REGISTRY-}fitnesstrackerapi
+    build:
+      context: .  # Путь к корню, где лежит .sln
+      dockerfile: FitnessTracker.API/Dockerfile # Путь к самому докерфайлу
+    ports:
+      - "5000:8080" # Внешний порт : Внутренний порт контейнера
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__SystemDbContext=Host=postgres;Port=5432;Database=fitness_tracker;Username=admin;Password=strongPassword
+      - Minio__ServiceUrl=http://minio:9000
+      - Minio__AccessKey=minio_admin
+      - Minio__SecretKey=minio_password
+      - Minio__BucketName=service-files
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   minio_data:

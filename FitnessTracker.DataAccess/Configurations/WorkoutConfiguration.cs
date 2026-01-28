@@ -12,10 +12,18 @@ internal class WorkoutConfiguration : IEntityTypeConfiguration<WorkoutEntity>
 
         builder.Property(x => x.Id)
             .HasColumnType("uuid")
+            .HasConversion(
+                v => Guid.Parse(v),
+                v => v.ToString()
+            )
             .HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(x => x.UserId)
-            .HasColumnType("uuid");
+            .HasColumnType("uuid")
+            .HasConversion(
+                v => Guid.Parse(v),
+                v => v.ToString()
+            );
 
         builder.Property(x => x.Title);
 

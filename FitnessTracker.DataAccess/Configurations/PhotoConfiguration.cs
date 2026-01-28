@@ -12,10 +12,18 @@ public class PhotoConfiguration : IEntityTypeConfiguration<PhotoEntity>
 
         builder.Property(x => x.Id)
             .HasColumnType("uuid")
+            .HasConversion(
+                v => Guid.Parse(v),
+                v => v.ToString()
+            )
             .HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(x => x.WorkoutId)
-            .HasColumnType("uuid");
+            .HasColumnType("uuid")
+            .HasConversion(
+                v => Guid.Parse(v),
+                v => v.ToString()
+            );
 
         builder.Property(x => x.FilePath);
 
