@@ -40,4 +40,6 @@ public class ExerciseEntity : IDocument
 
         return (exercise, []);
     }
+
+    public void AddSet(SetEntity set) => Sets.Add(set);
 }

@@ -10,4 +10,5 @@ public interface IWorkoutRepository
     Task<string> AddAsync(WorkoutEntity workout, CancellationToken ct);
     Task<string> UpdateAsync(string id, WorkoutUpdateModel model, CancellationToken ct);
     Task<string> DeleteAsync(string id, CancellationToken ct);
+    Task SaveChangesAsync(CancellationToken ct);
 }
