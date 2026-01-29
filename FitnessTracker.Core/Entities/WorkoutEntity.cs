@@ -56,4 +56,38 @@ public class WorkoutEntity : IDocument
 
         return (workout, []);
     }
+
+    public void Update(string? title, WorkoutType? type, TimeSpan? duration, double? caloriesBurned, DateTime? workoutDate)
+    {
+        if (title is not null)
+        {
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title cannot be empty");
+            Title = title;
+        }
+
+        if (type.HasValue)
+            Type = type.Value;
+
+        if (duration.HasValue)
+        {
+            if (duration.Value.TotalMinutes <= 0) throw new ArgumentException("Duration must be positive");
+            Duration = duration.Value;
+        }
+
+        if (caloriesBurned.HasValue)
+        {
+            if (caloriesBurned.Value < 0) throw new ArgumentException("Calories cannot be negative");
+            CaloriesBurned = caloriesBurned.Value;
+        }
+
+        if (workoutDate.HasValue)
+        {
+            if (workoutDate.Value > DateTime.UtcNow.AddDays(1)) throw new ArgumentException("Date cannot be in future");
+            WorkoutDate = workoutDate.Value;
+        }
+    }
+
+    public void AddExercise(ExerciseEntity exercise) => Exercises.Add(exercise);
+
+    public void AddPhoto(PhotoEntity photo) => Photos.Add(photo);
 }
