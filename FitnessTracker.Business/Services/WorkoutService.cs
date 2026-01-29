@@ -74,6 +74,9 @@ public class WorkoutService
         return _mapper.Map<WorkoutDto>(workout);
     }
 
+    public async Task<int> GetCountAsync(string userId, WorkoutFilter filter, CancellationToken ct) 
+        => await _workoutRepository.GetCountAsync(userId, filter, ct);
+
     public async Task<List<WorkoutDto>> GetUserWorkoutsAsync(string userId, WorkoutFilter filter, CancellationToken ct)
     {
         var workouts = await _workoutRepository.GetByUserIdAsync(userId, filter, ct);

@@ -2,7 +2,6 @@
 using FitnessTracker.Core.Entities;
 using FitnessTracker.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FitnessTracker.DataAccess.Repositories;
 
@@ -60,6 +59,17 @@ public class WorkoutRepository : IWorkoutRepository
                         .Include(x => x.Photos)
                         .AsNoTracking()
                         .FirstOrDefaultAsync(ct);
+    }
+
+    public async Task<int> GetCountAsync(string userId, WorkoutFilter filter, CancellationToken ct)
+    {
+        var query = _context.Workouts
+                        .Where(x => x.UserId == userId)
+                        .AsNoTracking();
+
+        query = ApplyFilter(query, filter);
+
+        return await query.CountAsync(ct);
     }
 
     public async Task<List<WorkoutEntity>> GetByUserIdAsync(string userId, WorkoutFilter filter, CancellationToken ct)
