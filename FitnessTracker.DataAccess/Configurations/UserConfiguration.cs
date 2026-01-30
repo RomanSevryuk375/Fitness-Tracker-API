@@ -1,4 +1,5 @@
 ﻿using FitnessTracker.Core.Entities;
+using FitnessTracker.DataAccess.Extentions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(t => t.Id)
             .HasColumnType("uuid")
             .HasConversion(
-                v => Guid.Parse(v),
+                v => ConversionHelper.StringToGuid(v),
                 v => v.ToString()
             )
             .HasDefaultValueSql("gen_random_uuid()");
