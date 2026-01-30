@@ -6,7 +6,6 @@ using FitnessTracker.Core.Entities;
 using FitnessTracker.Core.Enums;
 using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
-using System.IO;
 
 namespace FitnessTracker.Business.Services;
 
