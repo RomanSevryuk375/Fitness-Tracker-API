@@ -1,5 +1,6 @@
 ﻿using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Enums;
+using FitnessTracker.Core.Exceptions;
 
 namespace FitnessTracker.Core.Entities;
 
@@ -61,7 +62,7 @@ public class WorkoutEntity : IDocument
     {
         if (title is not null)
         {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title cannot be empty");
+            if (string.IsNullOrWhiteSpace(title)) throw new ValidationException("Title cannot be empty");
             Title = title;
         }
 
@@ -70,19 +71,19 @@ public class WorkoutEntity : IDocument
 
         if (duration.HasValue)
         {
-            if (duration.Value.TotalMinutes <= 0) throw new ArgumentException("Duration must be positive");
+            if (duration.Value.TotalMinutes <= 0) throw new ValidationException("Duration must be positive");
             Duration = duration.Value;
         }
 
         if (caloriesBurned.HasValue)
         {
-            if (caloriesBurned.Value < 0) throw new ArgumentException("Calories cannot be negative");
+            if (caloriesBurned.Value < 0) throw new ValidationException("Calories cannot be negative");
             CaloriesBurned = caloriesBurned.Value;
         }
 
         if (workoutDate.HasValue)
         {
-            if (workoutDate.Value > DateTime.UtcNow.AddDays(1)) throw new ArgumentException("Date cannot be in future");
+            if (workoutDate.Value > DateTime.UtcNow.AddDays(1)) throw new ValidationException("Date cannot be in future");
             WorkoutDate = workoutDate.Value;
         }
     }

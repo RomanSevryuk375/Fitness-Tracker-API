@@ -1,5 +1,6 @@
 ﻿using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.DataAccess.Repositories;
@@ -46,7 +47,7 @@ public class UserRepository : IUserRepository
     public async Task<string> UpdateAsync(string id, string login, string passwordHash, CancellationToken ct)
     {
         var entity = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, ct)
-            ?? throw new ArgumentException("User not found");
+            ?? throw new NotFoundException("User not found");
 
         if (!string.IsNullOrWhiteSpace(login)) 
             entity.SetLogin(login);
