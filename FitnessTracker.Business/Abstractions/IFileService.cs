@@ -1,6 +1,6 @@
 ﻿namespace FitnessTracker.Business.Abstractions;
 
-internal interface IFileService
+public interface IFileService
 {
     Task<string> UploadFileAsync(Stream fileStream, string fileName, string contentType, CancellationToken ct);
     Task<Stream> GetFileAsync(string fileName, CancellationToken ct);

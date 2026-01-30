@@ -6,6 +6,7 @@ using FitnessTracker.Core.Entities;
 using FitnessTracker.Core.Enums;
 using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
+using System.IO;
 
 namespace FitnessTracker.Business.Services;
 
@@ -13,14 +14,16 @@ public class WorkoutService : IWorkoutService
 {
     private readonly IWorkoutRepository _workoutRepository;
     private readonly IMapper _mapper;
+    private readonly IFileService _fileService;
 
-    public WorkoutService(IWorkoutRepository workoutRepository, IMapper mapper)
+    public WorkoutService(IWorkoutRepository workoutRepository, IMapper mapper, IFileService fileService)
     {
         _workoutRepository = workoutRepository;
         _mapper = mapper;
+        _fileService = fileService;
     }
 
-    public async Task<WorkoutDto> CreateAsync(string userId, CreateWorkoutRequest request, CancellationToken ct)
+    public async Task<WorkoutDto> CreateAsync(string userId, CreateWorkoutRequest request, List<FileModel> photos, CancellationToken ct)
     {
         var (workout, workoutErrors) = WorkoutEntity.Create(
             Guid.NewGuid().ToString(),
@@ -62,6 +65,22 @@ public class WorkoutService : IWorkoutService
             }
 
             workout.Exercises.Add(exercise!);
+        }
+
+        foreach (var photo in photos)
+        {
+            var filePath = await _fileService.UploadFileAsync(photo.Content, photo.FileName, photo.ContentType, ct);
+
+            var (photoEntity, photoErrors) = PhotoEntity.Create(
+                Guid.NewGuid().ToString(),
+                workout!.Id,
+                filePath,
+                DateTime.UtcNow);
+
+            if (!photoErrors.Any())
+            {
+                workout.AddPhoto(photoEntity!);
+            }
         }
 
         await _workoutRepository.AddAsync(workout!, ct);
@@ -108,6 +127,27 @@ public class WorkoutService : IWorkoutService
         if (existing.UserId != userId)
             throw new UnauthorizedAccessException("You don't own this workout");
 
+        foreach (var photo in existing.Photos)
+        {
+            await _fileService.DeleteFileAsync(photo.FilePath, ct);
+        }
+
         return await _workoutRepository.DeleteAsync(id, ct);
+    }
+
+    public async Task<(Stream FileStream, string ContentType)> GetPhotoAsync(string userId, string workoutId, string fileName, CancellationToken ct)
+    {
+        var workout = await _workoutRepository.GetByIdAsync(workoutId, ct)
+            ?? throw new NotFoundException("Workout not found");
+
+        if (workout.UserId != userId)
+            throw new UnauthorizedAccessException("You don't have access to this photo");
+
+        var photo = workout.Photos.FirstOrDefault(p => p.FilePath == fileName)
+            ?? throw new NotFoundException("Photo not found in this workout");
+
+        var stream = await _fileService.GetFileAsync(photo.FilePath, ct);
+
+        return (stream, "image/jpeg");
     }
 }
