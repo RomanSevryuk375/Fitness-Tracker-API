@@ -1,7 +1,7 @@
 ﻿namespace FitnessTracker.Business.DTOs;
 
 public record CreateSetRequest
-(
-    int Reps, 
-    double Weight
-);
+{
+    public int Reps { get; init; }
+    public double Weight { get; init; }
+};
