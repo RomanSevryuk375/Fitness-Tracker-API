@@ -1,9 +1,7 @@
-﻿
-namespace FitnessTracker.Business.Services
+﻿namespace FitnessTracker.Business.Abstractions;
+
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<string> LoginUserAsync(string login, string password, CancellationToken ct);
-        Task RegisterUserAsync(string login, string password, CancellationToken ct);
-    }
+    Task<string> LoginUserAsync(string login, string password, CancellationToken ct);
+    Task RegisterUserAsync(string login, string password, CancellationToken ct);
 }
