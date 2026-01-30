@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Business.DTOs;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Entities;
@@ -57,7 +58,7 @@ public class WorkoutService : IWorkoutService
                 if (setErrors.Any())
                     throw new ConflictException(string.Join(", ", setErrors));
 
-                exercise.Sets.Add(set!);
+                exercise.AddSet(set!);
             }
 
             workout.Exercises.Add(exercise!);
