@@ -1,7 +1,7 @@
 ﻿namespace FitnessTracker.Business.DTOs;
 
 public record RegisterRequest
-(
-    string Login, 
-    string Password
-);
+{
+    public string Login { get; init; } = null!;
+    public string Password { get; init; } = null!;
+};

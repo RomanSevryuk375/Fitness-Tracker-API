@@ -1,7 +1,7 @@
 ﻿namespace FitnessTracker.Business.DTOs;
 
 public record ExerciseDto
-(
-    string Name, 
-    List<SetDto> Sets
-);
+{
+    public string Name { get; init; } = null!;
+    public List<SetDto> Sets { get; init; } = [];
+}

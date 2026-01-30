@@ -11,8 +11,8 @@ public class WorkoutProfile : Profile
         CreateMap<SetEntity, SetDto>();
         CreateMap<ExerciseEntity, ExerciseDto>();
         CreateMap<WorkoutEntity, WorkoutDto>()
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
-        CreateMap<PhotoEntity, string>()
-            .ForMember(dest => dest, opt => opt.MapFrom(src => src.FilePath.ToString()));
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()))
+                .ForMember(dest => dest.ProgressPhotos, opt =>
+                    opt.MapFrom(src => src.Photos.Select(p => p.FilePath).ToList()));
     }
 }

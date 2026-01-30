@@ -1,13 +1,13 @@
 ﻿namespace FitnessTracker.Business.DTOs;
 
 public record WorkoutDto
-(
-    string Id,
-    string Title,
-    string Type,
-    List<string> ProgressPhotos,
-    TimeSpan Duration,
-    double CaloriesBurned,
-    DateTime WorkoutDate,
-    List<ExerciseDto> Exercises
-);
+{
+    public string Id { get; init; } = null!;
+    public string Title { get; init; } = null!;
+    public string Type { get; init; } = null!;
+    public List<string> ProgressPhotos { get; init; } = [];
+    public TimeSpan Duration { get; init; }
+    public double CaloriesBurned { get; init; }
+    public DateTime WorkoutDate { get; init; }
+    public List<ExerciseDto> Exercises { get; init; } = [];
+}

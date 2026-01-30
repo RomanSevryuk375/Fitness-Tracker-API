@@ -1,9 +1,9 @@
 ﻿namespace FitnessTracker.Business.DTOs;
 
 public record UserDto
-(
-    string Id,
-    string Login,
-    string PasswordHash,
-    DateTime CreatedAt
-);
+{
+    public string Id { get; init; } = null!;
+    public string Login { get; init; } = null!;
+    public string PasswordHash { get; init; } = null!;
+    public DateTime CreatedAt { get; init; }
+};
