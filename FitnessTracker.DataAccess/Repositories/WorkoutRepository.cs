@@ -1,5 +1,6 @@
 ﻿using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -107,7 +108,7 @@ public class WorkoutRepository : IWorkoutRepository
     public async Task<string> UpdateAsync(string id, WorkoutUpdateModel model, CancellationToken ct)
     {
         var entity = await _context.Workouts.FirstOrDefaultAsync(x => x.Id == id, ct)
-        ?? throw new ArgumentException("Workout not found");
+        ?? throw new NotFoundException("Workout not found");
 
         entity.Update(
             model.Title,

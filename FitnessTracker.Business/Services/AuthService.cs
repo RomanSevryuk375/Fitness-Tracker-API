@@ -1,6 +1,7 @@
 ﻿using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.Exceptions;
 
 namespace FitnessTracker.Business.Services;
 
@@ -20,10 +21,10 @@ public class AuthService : IAuthService
     public async Task<string> LoginUserAsync(string login, string password, CancellationToken ct)
     {
         var user = await _repository.GetByLoginAsync(login, ct)
-                ?? throw new ArgumentException("User not found");
+                ?? throw new NotFoundException("User not found");
 
         if (!_myPasswordHasher.Verify(password, user.PasswordHash))
-            throw new ArgumentException("Invalid password");
+            throw new UnauthorizedAccessException("Invalid password");
 
         return _jwtProvider.GenerateToken(user);
     }
@@ -31,7 +32,7 @@ public class AuthService : IAuthService
     public async Task RegisterUserAsync(string login, string password, CancellationToken ct)
     {
         if (await _repository.ExistsAsync(login, ct))
-            throw new ArgumentException("User already exists");
+            throw new ConflictException("User already exists");
 
         var hashedPassword = _myPasswordHasher.Generate(password);
 
@@ -42,7 +43,7 @@ public class AuthService : IAuthService
             DateTime.UtcNow);
 
         if (errors.Any())
-            throw new ArgumentException(string.Join(", ", errors));
+            throw new ConflictException(string.Join(", ", errors));
 
         await _repository.AddAsync(user!, ct);
     }

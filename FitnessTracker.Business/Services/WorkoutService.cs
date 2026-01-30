@@ -3,10 +3,12 @@ using FitnessTracker.Business.DTOs;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.Entities;
 using FitnessTracker.Core.Enums;
+using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
 
 namespace FitnessTracker.Business.Services;
-public class WorkoutService
+
+public class WorkoutService : IWorkoutService
 {
     private readonly IWorkoutRepository _workoutRepository;
     private readonly IMapper _mapper;
@@ -30,7 +32,7 @@ public class WorkoutService
             DateTime.UtcNow);
 
         if (workoutErrors.Any())
-            throw new ArgumentException(string.Join(", ", workoutErrors));
+            throw new ConflictException(string.Join(", ", workoutErrors));
 
         foreach (var ex in request.Exercises)
         {
@@ -40,7 +42,8 @@ public class WorkoutService
                 ex.Name,
                 DateTime.UtcNow);
 
-            if (exErrors.Any()) throw new ArgumentException(string.Join(", ", exErrors));
+            if (exErrors.Any())
+                throw new ConflictException(string.Join(", ", exErrors));
 
             foreach (var setReq in ex.Sets)
             {
@@ -51,7 +54,8 @@ public class WorkoutService
                     setReq.Weight,
                     DateTime.UtcNow);
 
-                if (setErrors.Any()) throw new ArgumentException(string.Join(", ", setErrors));
+                if (setErrors.Any())
+                    throw new ConflictException(string.Join(", ", setErrors));
 
                 exercise.Sets.Add(set!);
             }
@@ -74,8 +78,8 @@ public class WorkoutService
         return _mapper.Map<WorkoutDto>(workout);
     }
 
-    public async Task<int> GetCountAsync(string userId, WorkoutFilter filter, CancellationToken ct) 
-        => await _workoutRepository.GetCountAsync(userId, filter, ct);
+    public async Task<int> GetCountAsync(string userId, WorkoutFilter filter, CancellationToken ct) =>
+        await _workoutRepository.GetCountAsync(userId, filter, ct);
 
     public async Task<List<WorkoutDto>> GetUserWorkoutsAsync(string userId, WorkoutFilter filter, CancellationToken ct)
     {
@@ -87,7 +91,7 @@ public class WorkoutService
     public async Task<string> UpdateWorkout(string userId, string id, WorkoutUpdateModel model, CancellationToken ct)
     {
         var existing = await _workoutRepository.GetByIdAsync(id, ct)
-            ?? throw new KeyNotFoundException("Workout not found");
+            ?? throw new NotFoundException("Workout not found");
 
         if (existing.UserId != userId)
             throw new UnauthorizedAccessException("You don't own this workout");
@@ -98,7 +102,7 @@ public class WorkoutService
     public async Task<string> DeleteWorkout(string userId, string id, CancellationToken ct)
     {
         var existing = await _workoutRepository.GetByIdAsync(id, ct)
-           ?? throw new KeyNotFoundException("Workout not found");
+           ?? throw new NotFoundException("Workout not found");
 
         if (existing.UserId != userId)
             throw new UnauthorizedAccessException("You don't own this workout");

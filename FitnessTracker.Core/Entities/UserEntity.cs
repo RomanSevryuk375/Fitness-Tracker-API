@@ -1,6 +1,5 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using FitnessTracker.Core.Exceptions;
 
 namespace FitnessTracker.Core.Entities;
 
@@ -37,15 +36,15 @@ public class UserEntity : IDocument
         if (errors.Any())
             return (null, errors);
 
-        var exercise = new UserEntity(id, login, passwordHash, createdAt);
+        var user = new UserEntity(id, login, passwordHash, createdAt);
 
-        return (exercise, []);
+        return (user, []);
     }
 
     public void SetLogin(string login)
     {
         if (string.IsNullOrWhiteSpace(login))
-            throw new ArgumentException("Login can not be empty");
+            throw new ValidationException("Login can not be empty");
 
         Login = login;
     }
@@ -53,7 +52,7 @@ public class UserEntity : IDocument
     public void SetPasswordHash(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
-            throw new ArgumentException("Password can not be empty");
+            throw new ValidationException("Password can not be empty");
 
         PasswordHash = password;
     }
