@@ -1,4 +1,5 @@
 ﻿using FitnessTracker.Core.Entities;
+using FitnessTracker.DataAccess.Extentions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,7 @@ internal class WorkoutConfiguration : IEntityTypeConfiguration<WorkoutEntity>
         builder.Property(x => x.Id)
             .HasColumnType("uuid")
             .HasConversion(
-                v => Guid.Parse(v),
+                v => ConversionHelper.StringToGuid(v),
                 v => v.ToString()
             )
             .HasDefaultValueSql("gen_random_uuid()");
@@ -21,7 +22,7 @@ internal class WorkoutConfiguration : IEntityTypeConfiguration<WorkoutEntity>
         builder.Property(x => x.UserId)
             .HasColumnType("uuid")
             .HasConversion(
-                v => Guid.Parse(v),
+                v => ConversionHelper.StringToGuid(v),
                 v => v.ToString()
             );
 
