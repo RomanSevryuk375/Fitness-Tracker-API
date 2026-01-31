@@ -11,7 +11,7 @@ public class WorkoutEntity : IDocument
     public string Title { get; private set; } = string.Empty;
     public WorkoutType Type { get; private set; }
     public TimeSpan Duration { get; private set; }
-    public double CaloriesBurned { get; private set; }
+    public int CaloriesBurned { get; private set; }
     public DateTime WorkoutDate { get; private set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -21,7 +21,7 @@ public class WorkoutEntity : IDocument
 
     private WorkoutEntity() { }
 
-    private WorkoutEntity(string id, string userId, string title, WorkoutType type, TimeSpan duration, double caloriesBurned, DateTime workoutDate, DateTime createdAt)
+    private WorkoutEntity(string id, string userId, string title, WorkoutType type, TimeSpan duration, int caloriesBurned, DateTime workoutDate, DateTime createdAt)
     {
         Id = id;
         UserId = userId;
@@ -33,7 +33,7 @@ public class WorkoutEntity : IDocument
         CreatedAt = createdAt;
     }
 
-    public static (WorkoutEntity? workout, List<string> errors) Create(string id, string userId, string title, WorkoutType type, TimeSpan duration, double caloriesBurned, DateTime workoutDate, DateTime createdAt)
+    public static (WorkoutEntity? workout, List<string> errors) Create(string id, string userId, string title, WorkoutType type, TimeSpan duration, int caloriesBurned, DateTime workoutDate, DateTime createdAt)
     {
         var errors = new List<string>();
 
@@ -58,7 +58,7 @@ public class WorkoutEntity : IDocument
         return (workout, []);
     }
 
-    public void Update(string? title, WorkoutType? type, TimeSpan? duration, double? caloriesBurned, DateTime? workoutDate)
+    public void Update(string? title, WorkoutType? type, TimeSpan? duration, int? caloriesBurned, DateTime? workoutDate)
     {
         if (title is not null)
         {

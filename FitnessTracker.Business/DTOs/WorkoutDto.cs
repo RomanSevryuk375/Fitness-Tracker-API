@@ -7,7 +7,7 @@ public record WorkoutDto
     public string Type { get; init; } = null!;
     public List<string> ProgressPhotos { get; init; } = [];
     public TimeSpan Duration { get; init; }
-    public double CaloriesBurned { get; init; }
+    public int CaloriesBurned { get; init; }
     public DateTime WorkoutDate { get; init; }
     public List<ExerciseDto> Exercises { get; init; } = [];
 }
