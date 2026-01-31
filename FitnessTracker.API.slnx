@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="../FitnessTracker.Tests/FitnessTracker.Tests.csproj" Id="29a3e894-848b-4095-b366-4b5c070ba2d0" />
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="FitnessTracker.API/FitnessTracker.API.csproj" />
+  <Project Path="FitnessTracker.Business/FitnessTracker.Business.csproj" />
+  <Project Path="FitnessTracker.Core/FitnessTracker.Core.csproj" />
+  <Project Path="FitnessTracker.DataAccess/FitnessTracker.DataAccess.csproj" />
+  <Project Path="FitnessTracker.Tests/FitnessTracker.Tests.csproj" />
+</Solution>
