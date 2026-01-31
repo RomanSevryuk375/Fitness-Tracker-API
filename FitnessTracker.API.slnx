@@ -6,4 +6,5 @@
   <Project Path="FitnessTracker.Business/FitnessTracker.Business.csproj" />
   <Project Path="FitnessTracker.Core/FitnessTracker.Core.csproj" />
   <Project Path="FitnessTracker.DataAccess/FitnessTracker.DataAccess.csproj" />
+  <Project Path="FitnessTracker.Tests/FitnessTracker.Tests.csproj" />
 </Solution>

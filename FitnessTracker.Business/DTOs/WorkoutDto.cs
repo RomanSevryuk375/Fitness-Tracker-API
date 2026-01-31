@@ -3,6 +3,7 @@
 public record WorkoutDto
 {
     public string Id { get; init; } = null!;
+    public string UserId { get; set; } = null!;
     public string Title { get; init; } = null!;
     public string Type { get; init; } = null!;
     public List<string> ProgressPhotos { get; init; } = [];
