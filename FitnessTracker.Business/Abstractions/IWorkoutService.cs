@@ -1,6 +1,5 @@
 ﻿using FitnessTracker.Business.DTOs;
 using FitnessTracker.Core.Models;
-using System.IO;
 
 namespace FitnessTracker.Business.Abstractions;
 

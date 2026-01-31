@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FitnessTracker.Business.Abstractions;
+﻿using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

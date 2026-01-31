@@ -38,10 +38,10 @@ services:
   fitnesstracker.api:
     image: ${DOCKER_REGISTRY-}fitnesstrackerapi
     build:
-      context: .  # Путь к корню, где лежит .sln
-      dockerfile: FitnessTracker.API/Dockerfile # Путь к самому докерфайлу
+      context: .  
+      dockerfile: FitnessTracker.API/Dockerfile 
     ports:
-      - "5000:8080" # Внешний порт : Внутренний порт контейнера
+      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
