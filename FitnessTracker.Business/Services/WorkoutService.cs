@@ -6,6 +6,7 @@ using FitnessTracker.Core.Entities;
 using FitnessTracker.Core.Enums;
 using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
+using FluentValidation;
 
 namespace FitnessTracker.Business.Services;
 
@@ -14,16 +15,28 @@ public class WorkoutService : IWorkoutService
     private readonly IWorkoutRepository _workoutRepository;
     private readonly IMapper _mapper;
     private readonly IFileService _fileService;
+    private readonly IValidator<CreateWorkoutRequest> _validator;
 
-    public WorkoutService(IWorkoutRepository workoutRepository, IMapper mapper, IFileService fileService)
+    public WorkoutService(
+        IWorkoutRepository workoutRepository, 
+        IMapper mapper, 
+        IFileService fileService,
+        IValidator<CreateWorkoutRequest> validator)
     {
         _workoutRepository = workoutRepository;
         _mapper = mapper;
         _fileService = fileService;
+        _validator = validator;
     }
 
     public async Task<WorkoutDto> CreateAsync(string userId, CreateWorkoutRequest request, List<FileModel> photos, CancellationToken ct)
     {
+        var validationResult = await _validator.ValidateAsync(request, ct);
+        if (!validationResult.IsValid)
+        {
+            throw new Core.Exceptions.ValidationException(validationResult.Errors.First().ErrorMessage);
+        }
+
         var (workout, workoutErrors) = WorkoutEntity.Create(
             Guid.NewGuid().ToString(),
             userId,
