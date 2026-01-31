@@ -3,9 +3,11 @@ using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Business.MapProfiles;
 using FitnessTracker.Business.Secure;
 using FitnessTracker.Business.Services;
+using FitnessTracker.Business.Validators;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.DataAccess;
 using FitnessTracker.DataAccess.Repositories;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -68,6 +70,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateWorkoutRequestValidator>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
