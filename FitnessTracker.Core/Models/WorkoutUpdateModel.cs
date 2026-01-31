@@ -7,6 +7,6 @@ public record WorkoutUpdateModel
     string? Title,
     WorkoutType? Type,
     TimeSpan? Duration,
-    double? CaloriesBurned,
+    int? CaloriesBurned,
     DateTime? WorkoutDate
 );
