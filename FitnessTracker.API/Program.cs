@@ -6,6 +6,7 @@ using FitnessTracker.Business.Services;
 using FitnessTracker.Business.Validators;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.DataAccess;
+using FitnessTracker.DataAccess.Extentions;
 using FitnessTracker.DataAccess.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

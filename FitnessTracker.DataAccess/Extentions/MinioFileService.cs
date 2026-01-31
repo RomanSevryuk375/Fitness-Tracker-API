@@ -3,7 +3,7 @@ using Amazon.S3.Transfer;
 using FitnessTracker.Business.Abstractions;
 using Microsoft.Extensions.Configuration;
 
-namespace FitnessTracker.Business.Secure;
+namespace FitnessTracker.DataAccess.Extentions;
 
 public class MinioFileService : IFileService
 {
