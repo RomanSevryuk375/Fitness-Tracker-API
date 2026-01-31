@@ -66,23 +66,36 @@ public class WorkoutService : IWorkoutService
             workout.Exercises.Add(exercise!);
         }
 
-        foreach (var photo in photos)
+        var uploadedFiles = new List<string>();
+        try
         {
-            var filePath = await _fileService.UploadFileAsync(photo.Content, photo.FileName, photo.ContentType, ct);
-
-            var (photoEntity, photoErrors) = PhotoEntity.Create(
-                Guid.NewGuid().ToString(),
-                workout!.Id,
-                filePath,
-                DateTime.UtcNow);
-
-            if (!photoErrors.Any())
+            foreach (var photo in photos)
             {
-                workout.AddPhoto(photoEntity!);
-            }
-        }
+                var filePath = await _fileService.UploadFileAsync(photo.Content, photo.FileName, photo.ContentType, ct);
+                uploadedFiles.Add(filePath);
 
-        await _workoutRepository.AddAsync(workout!, ct);
+                var (photoEntity, photoErrors) = PhotoEntity.Create(
+                    Guid.NewGuid().ToString(),
+                    workout!.Id,
+                    filePath,
+                    DateTime.UtcNow);
+
+                if (!photoErrors.Any())
+                {
+                    workout.AddPhoto(photoEntity!);
+                }
+            }
+
+            await _workoutRepository.AddAsync(workout!, ct);
+        }
+        catch (Exception)
+        {
+            foreach(var path in uploadedFiles)
+            {
+                await _fileService.DeleteFileAsync(path, ct);
+            }
+            throw;
+        }
 
         return _mapper.Map<WorkoutDto>(workout);
     }
