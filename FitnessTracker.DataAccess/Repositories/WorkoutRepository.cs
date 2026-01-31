@@ -21,16 +21,16 @@ public class WorkoutRepository : IWorkoutRepository
             query = query.Where(o => filter.Types.Contains(o.Type));
 
         if (filter.DateFrom is not null)
-            query = query.Where(o => o.WorkoutDate > filter.DateFrom);
+            query = query.Where(o => o.WorkoutDate >= filter.DateFrom);
 
         if (filter.DateTo is not null)
-            query = query.Where(o => o.WorkoutDate < filter.DateTo);
+            query = query.Where(o => o.WorkoutDate <= filter.DateTo);
 
         if (filter.MinDuration is not null)
-            query = query.Where(o => o.Duration > filter.MinDuration);
+            query = query.Where(o => o.Duration >= filter.MinDuration);
 
         if (filter.MaxDuration is not null)
-            query = query.Where(o => o.Duration < filter.MaxDuration);
+            query = query.Where(o => o.Duration <= filter.MaxDuration);
 
         return query;
     }
