@@ -15,14 +15,14 @@ namespace FitnessTracker.API.Controllers
             _authService = authService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("users")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
         {
             await _authService.RegisterUserAsync(request.Login, request.Password, ct);
             return Created();
         }
 
-        [HttpPost("login")]
+        [HttpPost("token")]
         public async Task<ActionResult<string>> Login([FromBody] LoginRequest request, CancellationToken ct)
         {
             var token = await _authService.LoginUserAsync(request.Login, request.Password, ct);

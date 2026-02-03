@@ -68,7 +68,7 @@ public class WorkoutsController : ControllerBase
         return NoContent(); 
     }
 
-    [HttpGet("{id}/photos/{fileName}")]
+    [HttpGet("{id}/photos/{photoId}")]
     public async Task<IActionResult> GetPhoto(string id, string fileName, CancellationToken ct)
     {
         var (stream, contentType) = await _workoutService.GetPhotoAsync(CurrentUserId, id, fileName, ct);
