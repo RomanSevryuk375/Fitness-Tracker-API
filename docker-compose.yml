@@ -41,7 +41,7 @@ services:
       context: .  
       dockerfile: FitnessTracker.API/Dockerfile 
     ports:
-      - "5000:8080"
+      - "8090:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
