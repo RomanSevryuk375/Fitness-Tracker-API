@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/18
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d fitness-postgres"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d fitness_tracker"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -41,7 +41,7 @@ services:
       context: .  
       dockerfile: FitnessTracker.API/Dockerfile 
     ports:
-      - "5000:8080"
+      - "8090:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080

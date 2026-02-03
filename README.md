@@ -81,3 +81,13 @@ public enum WorkoutType
 - Следование **Conventional Commits** в процессе разработки; 
 - Использование **Docker** и **Docker-compose**;
 - Cоблюдение принципов **SOLID**.
+
+## Доступ к сервисам
+- Swagger UI: http://localhost:8090/swagger
+- MinIO Console: http://localhost:9003 (Логин: minio_admin, Пароль: minio_password)
+
+Находясь в корне проекта , выполните команду:
+```bash
+docker-compose up -d --build 
+
+
