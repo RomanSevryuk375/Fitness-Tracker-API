@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FitnessTracker.DataAccess.Configurations;
 
-public class PhotoConfiguration : IEntityTypeConfiguration<PhotoEntity>
+public class PhotoConfiguration : IEntityTypeConfiguration<Photo>
 {
-    void IEntityTypeConfiguration<PhotoEntity>.Configure(EntityTypeBuilder<PhotoEntity> builder)
+    void IEntityTypeConfiguration<Photo>.Configure(EntityTypeBuilder<Photo> builder)
     {
         builder.ToTable("photos");
 

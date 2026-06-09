@@ -49,11 +49,15 @@ public class UserRepository : IUserRepository
         var entity = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, ct)
             ?? throw new NotFoundException("User not found");
 
-        if (!string.IsNullOrWhiteSpace(login)) 
+        if (!string.IsNullOrWhiteSpace(login))
+        {
             entity.SetLogin(login);
+        }
 
         if (!string.IsNullOrWhiteSpace(passwordHash))
-            entity.SetPasswordHash(passwordHash);            
+        {
+            entity.SetPasswordHash(passwordHash);
+        }
 
         await _context.SaveChangesAsync(ct);
 

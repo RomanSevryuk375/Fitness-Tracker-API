@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FitnessTracker.DataAccess.Configurations;
 
-internal class WorkoutConfiguration : IEntityTypeConfiguration<WorkoutEntity>
+internal class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
 {
-    void IEntityTypeConfiguration<WorkoutEntity>.Configure(EntityTypeBuilder<WorkoutEntity> builder)
+    void IEntityTypeConfiguration<Workout>.Configure(EntityTypeBuilder<Workout> builder)
     {
         builder.ToTable("workouts");
 

@@ -1,20 +1,21 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.Exceptions;
+using Shared.Result;
 
 namespace FitnessTracker.Core.Entities;
 
 public class UserEntity : IDocument
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public Guid Id { get; set; } 
     public string Login { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } 
+    public List<Workout> Workouts { get; private set; } = [];
 
-    public List<WorkoutEntity> Workouts { get; private set; } = [];
-
-    private UserEntity() { }
-
-    private UserEntity(string id, string login, string passwordHash, DateTime createdAt)
+    private UserEntity(
+        Guid id, 
+        string login, 
+        string passwordHash, 
+        DateTime createdAt)
     {
         Id = id;
         Login = login;
@@ -22,38 +23,61 @@ public class UserEntity : IDocument
         CreatedAt = createdAt;
     }
 
-    public static (UserEntity? user, List<string> errors) Create(string id, string login, string passwordHash, DateTime createdAt)
+    public static Result<UserEntity> Create(string login, string passwordHash)
     {
         var errors = new List<string>();
 
-        if (string.IsNullOrWhiteSpace(id))
-            errors.Add("Id can not be empty");
         if (string.IsNullOrWhiteSpace(login))
+        {
             errors.Add("Login can not be empty");
+        }
+
         if (string.IsNullOrWhiteSpace(passwordHash))
+        {
             errors.Add("PasswordHash can not be empty");
+        }
 
-        if (errors.Any())
-            return (null, errors);
+        if (errors.Count != 0)
+        {
+            return Result<UserEntity>.Failure(Error.Validation(
+                $"{nameof(UserEntity)}.Invalid",
+                string.Join("; ", errors)));
+        }
 
-        var user = new UserEntity(id, login, passwordHash, createdAt);
+        var user = new UserEntity(
+            Guid.NewGuid(),
+            login.Trim(), 
+            passwordHash.Trim(), 
+            DateTime.UtcNow);
 
-        return (user, []);
+        return Result<UserEntity>.Success(user);
     }
 
-    public void SetLogin(string login)
+    public Result SetLogin(string login)
     {
         if (string.IsNullOrWhiteSpace(login))
-            throw new ValidationException("Login can not be empty");
+        {
+            return Result.Failure(Error.Validation(
+                $"{nameof(UserEntity)}.Invalid",
+                "Login can not be empty"));
+        }
 
-        Login = login;
+        Login = login.Trim();
+
+        return Result.Success();
     }
 
-    public void SetPasswordHash(string password)
+    public Result SetPasswordHash(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
-            throw new ValidationException("Password can not be empty");
+        {
+            return Result.Failure(Error.Validation(
+                $"{nameof(UserEntity)}.Invalid",
+                "Password can not be empty"));
+        }
 
-        PasswordHash = password;
+        PasswordHash = password.Trim();
+
+        return Result.Success();
     }
 }

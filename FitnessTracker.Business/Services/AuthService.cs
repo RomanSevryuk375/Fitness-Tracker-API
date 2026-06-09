@@ -24,7 +24,9 @@ public class AuthService : IAuthService
                 ?? throw new NotFoundException("User not found");
 
         if (!_myPasswordHasher.Verify(password, user.PasswordHash))
+        {
             throw new UnauthorizedAccessException("Invalid password");
+        }
 
         return _jwtProvider.GenerateToken(user);
     }
@@ -32,7 +34,9 @@ public class AuthService : IAuthService
     public async Task RegisterUserAsync(string login, string password, CancellationToken ct)
     {
         if (await _repository.ExistsAsync(login, ct))
+        {
             throw new ConflictException("User already exists");
+        }
 
         var hashedPassword = _myPasswordHasher.Generate(password);
 
@@ -43,7 +47,9 @@ public class AuthService : IAuthService
             DateTime.UtcNow);
 
         if (errors.Any())
+        {
             throw new ConflictException(string.Join(", ", errors));
+        }
 
         await _repository.AddAsync(user!, ct);
     }

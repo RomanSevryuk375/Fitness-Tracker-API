@@ -2,6 +2,6 @@
 
 public interface IDocument
 {
-    string Id { get; set; }
-    DateTime CreatedAt { get; set; }
+    Guid Id { get; }
+    DateTime CreatedAt { get; }
 }

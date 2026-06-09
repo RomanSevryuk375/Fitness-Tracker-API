@@ -49,7 +49,10 @@ public class WorkoutsController : ControllerBase
     public async Task<ActionResult<WorkoutDto>> GetById(string id, CancellationToken ct)
     {
         var workout = await _workoutService.GetByIdAsync(CurrentUserId, id, ct);
-        if (workout == null) return NotFound();
+        if (workout == null)
+        {
+            return NotFound();
+        }
 
         return Ok(workout);
     }

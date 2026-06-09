@@ -9,11 +9,11 @@ public class SystemDbContext : DbContext
     {
     }
     
-    public DbSet<ExerciseEntity> Exercises { get; set; }
-    public DbSet<PhotoEntity> Photos { get; set; }
-    public DbSet<SetEntity> Sets { get; set; }
+    public DbSet<Exercise> Exercises { get; set; }
+    public DbSet<Photo> Photos { get; set; }
+    public DbSet<Set> Sets { get; set; }
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<WorkoutEntity> Workouts { get; set; }
+    public DbSet<Workout> Workouts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

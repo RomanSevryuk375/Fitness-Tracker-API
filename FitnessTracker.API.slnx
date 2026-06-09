@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="../FitnessTracker.Tests/FitnessTracker.Tests.csproj" Id="29a3e894-848b-4095-b366-4b5c070ba2d0" />
+  <Project Path="../Shared/Shared.csproj" Id="82677c9a-93b3-4b8a-9337-e5d0537e5f8e" />
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

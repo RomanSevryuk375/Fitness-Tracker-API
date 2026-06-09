@@ -66,7 +66,7 @@ public class WorkoutServiceTests
             .ReturnsAsync(s3Path);
 
         _repoMock.Setup(r => r.AddAsync(
-            It.IsAny<WorkoutEntity>(),
+            It.IsAny<Workout>(),
             It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB fail"));
 
@@ -87,7 +87,7 @@ public class WorkoutServiceTests
         var realOwnerId = "owner-id";
         var hackerId = "hacker-id";
 
-        var workout = WorkoutEntity.Create(
+        var workout = Workout.Create(
             workoutId,
             realOwnerId, 
             "Secret Workout",

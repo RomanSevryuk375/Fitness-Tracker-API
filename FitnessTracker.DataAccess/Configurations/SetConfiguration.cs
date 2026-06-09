@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FitnessTracker.DataAccess.Configurations;
 
-public class SetConfiguration : IEntityTypeConfiguration<SetEntity>
+public class SetConfiguration : IEntityTypeConfiguration<Set>
 {
-    void IEntityTypeConfiguration<SetEntity>.Configure(EntityTypeBuilder<SetEntity> builder)
+    void IEntityTypeConfiguration<Set>.Configure(EntityTypeBuilder<Set> builder)
     {
         builder.ToTable("sets");
 

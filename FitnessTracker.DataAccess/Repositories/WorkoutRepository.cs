@@ -15,27 +15,37 @@ public class WorkoutRepository : IWorkoutRepository
         _context = context;
     }
 
-    private static IQueryable<WorkoutEntity> ApplyFilter(IQueryable<WorkoutEntity> query, WorkoutFilter filter)
+    private static IQueryable<Workout> ApplyFilter(IQueryable<Workout> query, WorkoutFilter filter)
     {
         if (filter.Types is not null && filter.Types.Any())
+        {
             query = query.Where(o => filter.Types.Contains(o.Type));
+        }
 
         if (filter.DateFrom is not null)
+        {
             query = query.Where(o => o.WorkoutDate >= filter.DateFrom);
+        }
 
         if (filter.DateTo is not null)
+        {
             query = query.Where(o => o.WorkoutDate <= filter.DateTo);
+        }
 
         if (filter.MinDuration is not null)
+        {
             query = query.Where(o => o.Duration >= filter.MinDuration);
+        }
 
         if (filter.MaxDuration is not null)
+        {
             query = query.Where(o => o.Duration <= filter.MaxDuration);
+        }
 
         return query;
     }
 
-    public async Task<string> AddAsync(WorkoutEntity workout, CancellationToken ct)
+    public async Task<string> AddAsync(Workout workout, CancellationToken ct)
     {
         await _context.Workouts.AddAsync(workout, ct);
         await _context.SaveChangesAsync(ct);
@@ -51,7 +61,7 @@ public class WorkoutRepository : IWorkoutRepository
         return id;
     }
 
-    public async Task<WorkoutEntity?> GetByIdAsync(string id, CancellationToken ct)
+    public async Task<Workout?> GetByIdAsync(string id, CancellationToken ct)
     {
         return await _context.Workouts
                         .Where(x => x.Id == id)
@@ -73,7 +83,7 @@ public class WorkoutRepository : IWorkoutRepository
         return await query.CountAsync(ct);
     }
 
-    public async Task<List<WorkoutEntity>> GetByUserIdAsync(string userId, WorkoutFilter filter, CancellationToken ct)
+    public async Task<List<Workout>> GetByUserIdAsync(string userId, WorkoutFilter filter, CancellationToken ct)
     {
         var query = _context.Workouts
                         .Where(x => x.UserId == userId)

@@ -37,7 +37,7 @@ public class WorkoutService : IWorkoutService
             throw new Core.Exceptions.ValidationException(validationResult.Errors.First().ErrorMessage);
         }
 
-        var (workout, workoutErrors) = WorkoutEntity.Create(
+        var (workout, workoutErrors) = Workout.Create(
             Guid.NewGuid().ToString(),
             userId,
             request.Title,
@@ -48,22 +48,26 @@ public class WorkoutService : IWorkoutService
             DateTime.UtcNow);
 
         if (workoutErrors.Any())
+        {
             throw new ConflictException(string.Join(", ", workoutErrors));
+        }
 
         foreach (var ex in request.Exercises)
         {
-            var (exercise, exErrors) = ExerciseEntity.Create(
+            var (exercise, exErrors) = Exercise.Create(
                 Guid.NewGuid().ToString(),
                 workout!.Id,
                 ex.Name,
                 DateTime.UtcNow);
 
             if (exErrors.Any())
+            {
                 throw new ConflictException(string.Join(", ", exErrors));
+            }
 
             foreach (var setReq in ex.Sets)
             {
-                var (set, setErrors) = SetEntity.Create(
+                var (set, setErrors) = Set.Create(
                     Guid.NewGuid().ToString(),
                     exercise!.Id,
                     setReq.Reps,
@@ -71,7 +75,9 @@ public class WorkoutService : IWorkoutService
                     DateTime.UtcNow);
 
                 if (setErrors.Any())
+                {
                     throw new ConflictException(string.Join(", ", setErrors));
+                }
 
                 exercise.AddSet(set!);
             }
@@ -87,7 +93,7 @@ public class WorkoutService : IWorkoutService
                 var filePath = await _fileService.UploadFileAsync(photo.Content, photo.FileName, photo.ContentType, ct);
                 uploadedFiles.Add(filePath);
 
-                var (photoEntity, photoErrors) = PhotoEntity.Create(
+                var (photoEntity, photoErrors) = Photo.Create(
                     Guid.NewGuid().ToString(),
                     workout!.Id,
                     filePath,
@@ -118,7 +124,9 @@ public class WorkoutService : IWorkoutService
         var workout = await _workoutRepository.GetByIdAsync(workoutId, ct);
 
         if (workout == null || workout.UserId != userId)
+        {
             return null;
+        }
 
         return _mapper.Map<WorkoutDto>(workout);
     }
@@ -139,7 +147,9 @@ public class WorkoutService : IWorkoutService
             ?? throw new NotFoundException("Workout not found");
 
         if (existing.UserId != userId)
+        {
             throw new UnauthorizedAccessException("You don't own this workout");
+        }
 
         return await _workoutRepository.UpdateAsync(id, model, ct);
     }
@@ -150,7 +160,9 @@ public class WorkoutService : IWorkoutService
            ?? throw new NotFoundException("Workout not found");
 
         if (existing.UserId != userId)
+        {
             throw new UnauthorizedAccessException("You don't own this workout");
+        }
 
         foreach (var photo in existing.Photos)
         {
@@ -166,7 +178,9 @@ public class WorkoutService : IWorkoutService
             ?? throw new NotFoundException("Workout not found");
 
         if (workout.UserId != userId)
+        {
             throw new UnauthorizedAccessException("You don't have access to this photo");
+        }
 
         var photo = workout.Photos.FirstOrDefault(p => p.FilePath == fileName)
             ?? throw new NotFoundException("Photo not found in this workout");

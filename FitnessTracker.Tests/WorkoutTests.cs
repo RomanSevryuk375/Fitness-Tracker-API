@@ -12,7 +12,7 @@ public class WorkoutTests
         var id = Guid.NewGuid().ToString();
         var userId = Guid.NewGuid().ToString();
 
-        var (workout, errors) = WorkoutEntity.Create(
+        var (workout, errors) = Workout.Create(
             id, 
             userId, 
             "Morning Yoga", 
@@ -34,7 +34,7 @@ public class WorkoutTests
     public void Create_WithInvalidTitle_ShouldReturnError(string invalidTitle)
     {
 
-        var (_, errors) = WorkoutEntity.Create(
+        var (_, errors) = Workout.Create(
             Guid.NewGuid().ToString(), 
             "user1", 
             invalidTitle, 
@@ -53,7 +53,7 @@ public class WorkoutTests
     [InlineData(-10)]
     public void Create_WithInvalidDuration_ShouldReturnError(int minutes)
     {
-        var (_, errors) = WorkoutEntity.Create(
+        var (_, errors) = Workout.Create(
             Guid.NewGuid().ToString(),
             "user1", 
             "Title", 
@@ -69,7 +69,7 @@ public class WorkoutTests
     [Fact]
     public void Update_WithValidData_ShouldChangeProperties()
     {
-        var workout = WorkoutEntity.Create(
+        var workout = Workout.Create(
             Guid.NewGuid().ToString(),
             "user1", 
             "Old Title", 
