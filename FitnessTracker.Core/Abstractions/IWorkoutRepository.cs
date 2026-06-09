@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Core.Entities;
+﻿using FitnessTracker.Core.AggregateRoots.Workout;
 using FitnessTracker.Core.Models;
 
 namespace FitnessTracker.Core.Abstractions;

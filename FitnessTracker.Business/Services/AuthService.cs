@@ -1,6 +1,6 @@
 ﻿using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.AggregateRoots.User;
 using FitnessTracker.Core.Exceptions;
 
 namespace FitnessTracker.Business.Services;
@@ -40,7 +40,7 @@ public class AuthService : IAuthService
 
         var hashedPassword = _myPasswordHasher.Generate(password);
 
-        var (user, errors) = UserEntity.Create(
+        var (user, errors) = User.Create(
             Guid.NewGuid().ToString(),
             login,
             hashedPassword,

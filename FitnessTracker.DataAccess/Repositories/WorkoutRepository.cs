@@ -1,5 +1,5 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.AggregateRoots.Workout;
 using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;
 using Microsoft.EntityFrameworkCore;

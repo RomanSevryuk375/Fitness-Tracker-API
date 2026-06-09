@@ -1,5 +1,5 @@
 ﻿using FitnessTracker.Business.Abstractions;
-using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.AggregateRoots.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +13,7 @@ public class JwtProvider : IJwtProvider
     private readonly JwtOptions _options;
 
     public JwtProvider(IOptions<JwtOptions> options) => _options = options.Value;
-    public string GenerateToken(UserEntity user)
+    public string GenerateToken(User user)
     {
         Claim[] claims = [new(ClaimTypes.NameIdentifier, user.Id)];
 

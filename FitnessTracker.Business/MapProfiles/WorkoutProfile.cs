@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FitnessTracker.Business.DTOs;
-using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.AggregateRoots.Workout;
 
 namespace FitnessTracker.Business.MapProfiles;
 

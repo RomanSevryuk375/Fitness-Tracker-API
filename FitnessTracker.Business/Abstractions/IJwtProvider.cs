@@ -1,8 +1,8 @@
-﻿using FitnessTracker.Core.Entities;
+﻿using FitnessTracker.Core.AggregateRoots.User;
 
 namespace FitnessTracker.Business.Abstractions;
 
 public interface IJwtProvider
 {
-    string GenerateToken(UserEntity user);
+    string GenerateToken(User user);
 }

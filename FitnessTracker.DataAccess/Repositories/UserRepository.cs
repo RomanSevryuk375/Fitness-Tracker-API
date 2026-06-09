@@ -1,5 +1,5 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.Entities;
+using FitnessTracker.Core.AggregateRoots.User;
 using FitnessTracker.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-    public async Task<string> AddAsync(UserEntity user, CancellationToken ct)
+    public async Task<string> AddAsync(User user, CancellationToken ct)
     {
         await _context.Users.AddAsync(user, ct);
         await _context.SaveChangesAsync(ct);
@@ -37,7 +37,7 @@ public class UserRepository : IUserRepository
             .AnyAsync(u => u.Id == id, ct);
     }
 
-    public async Task<UserEntity?> GetByLoginAsync(string login, CancellationToken ct)
+    public async Task<User?> GetByLoginAsync(string login, CancellationToken ct)
     {
         return await _context.Users.AsNoTracking()
             .Where(u => u.Login == login)

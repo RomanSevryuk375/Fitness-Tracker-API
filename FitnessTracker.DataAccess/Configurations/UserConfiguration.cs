@@ -1,13 +1,13 @@
-﻿using FitnessTracker.Core.Entities;
+﻿using FitnessTracker.Core.AggregateRoots.User;
 using FitnessTracker.DataAccess.Extentions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FitnessTracker.DataAccess.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    void IEntityTypeConfiguration<UserEntity>.Configure(EntityTypeBuilder<UserEntity> builder)
+    void IEntityTypeConfiguration<User>.Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users");
 

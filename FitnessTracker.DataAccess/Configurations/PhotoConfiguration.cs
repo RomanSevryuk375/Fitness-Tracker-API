@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Core.Entities;
+﻿using FitnessTracker.Core.AggregateRoots.MediaAttachment;
 using FitnessTracker.DataAccess.Extentions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
