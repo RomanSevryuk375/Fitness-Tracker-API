@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FitnessTracker.DataAccess.Migrations
 {
-    [DbContext(typeof(SystemDbContext))]
+    [DbContext(typeof(FitnessDbContext))]
     [Migration("20260128222706_InitialCreate")]
     partial class InitialCreate
     {

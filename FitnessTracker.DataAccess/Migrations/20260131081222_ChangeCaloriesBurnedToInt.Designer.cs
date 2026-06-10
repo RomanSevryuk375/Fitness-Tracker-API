@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FitnessTracker.DataAccess.Migrations
 {
-    [DbContext(typeof(SystemDbContext))]
+    [DbContext(typeof(FitnessDbContext))]
     [Migration("20260131081222_ChangeCaloriesBurnedToInt")]
     partial class ChangeCaloriesBurnedToInt
     {

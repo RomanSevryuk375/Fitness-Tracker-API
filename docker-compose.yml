@@ -45,7 +45,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__SystemDbContext=Host=postgres;Port=5432;Database=fitness_tracker;Username=admin;Password=strongPassword
+      - ConnectionStrings__FitnessDbContext=Host=postgres;Port=5432;Database=fitness_tracker;Username=admin;Password=strongPassword
       - Minio__ServiceUrl=http://minio:9000
       - Minio__AccessKey=minio_admin
       - Minio__SecretKey=minio_password

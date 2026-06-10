@@ -7,9 +7,9 @@ namespace FitnessTracker.DataAccess.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly SystemDbContext _context;
+    private readonly FitnessDbContext _context;
 
-    public UserRepository(SystemDbContext context)
+    public UserRepository(FitnessDbContext context)
     {
         _context = context;
     }

@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.DataAccess;
 
-public class SystemDbContext : DbContext
+public class FitnessDbContext(DbContextOptions<FitnessDbContext> options) : DbContext(options)
 {
-    public SystemDbContext(DbContextOptions<SystemDbContext> options) : base(options)
-    {
-    }
-    
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<Photo> Photos { get; set; }
     public DbSet<Set> Sets { get; set; }
@@ -19,6 +15,6 @@ public class SystemDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SystemDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(FitnessDbContext).Assembly);
     }
 }

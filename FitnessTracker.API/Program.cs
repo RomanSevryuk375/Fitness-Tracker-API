@@ -49,9 +49,9 @@ builder.Services.AddSwaggerGen(opt =>
 });
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(WorkoutProfile).Assembly));
 
-builder.Services.AddDbContext<SystemDbContext>(options =>
+builder.Services.AddDbContext<FitnessDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SystemDbContext)))
+    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(FitnessDbContext)))
            .UseSnakeCaseNamingConvention();
 });
 
@@ -93,7 +93,7 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<SystemDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<FitnessDbContext>();
     dbContext.Database.Migrate();
 }
 
