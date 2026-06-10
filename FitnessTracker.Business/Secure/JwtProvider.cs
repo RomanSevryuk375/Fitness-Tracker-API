@@ -1,5 +1,5 @@
 ﻿using FitnessTracker.Business.Abstractions;
-using FitnessTracker.Core.AggregateRoots.User;
+using FitnessTracker.Core.AggregateRoots.Users;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

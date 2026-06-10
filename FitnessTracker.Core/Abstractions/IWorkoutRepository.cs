@@ -1,15 +1,17 @@
-﻿using FitnessTracker.Core.AggregateRoots.Workout;
+﻿using FitnessTracker.Core.AggregateRoots.Workouts;
 using FitnessTracker.Core.Models;
 
 namespace FitnessTracker.Core.Abstractions;
 
 public interface IWorkoutRepository
 {
-    Task<Workout?> GetByIdAsync(string id, CancellationToken ct);
-    Task<List<Workout>> GetByUserIdAsync(string userId, WorkoutFilter filter, CancellationToken ct);
-    Task<int> GetCountAsync(string userId, WorkoutFilter filter, CancellationToken ct);
-    Task<string> AddAsync(Workout workout, CancellationToken ct);
-    Task<string> UpdateAsync(string id, WorkoutUpdateModel model, CancellationToken ct);
-    Task<string> DeleteAsync(string id, CancellationToken ct);
-    Task SaveChangesAsync(CancellationToken ct);
+    Task AddAsync(Workout workout, CancellationToken cancellationToken);
+    Task DeleteAsync(Workout workout);
+    Task<Workout?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<List<Workout>> GetByUserIdAsync(
+        Guid userId, 
+        WorkoutFilter filter, 
+        CancellationToken cancellationToken);
+    Task<int> GetCountAsync(Guid userId, WorkoutFilter filter, CancellationToken cancellationToken);
+    Task UpdateAsync(Workout workout);
 }

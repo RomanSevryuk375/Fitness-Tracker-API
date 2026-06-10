@@ -1,12 +1,14 @@
-﻿using FitnessTracker.Core.AggregateRoots.User;
+﻿using FitnessTracker.Core.AggregateRoots.Users;
+using Shared.Result;
 
 namespace FitnessTracker.Core.Abstractions;
 
 public interface IUserRepository
 {
-    Task<User?> GetByLoginAsync(string login, CancellationToken ct);
-    Task<string> AddAsync(User user, CancellationToken ct);
-    Task<string> UpdateAsync(string id, string login, string password, CancellationToken ct);
-    Task<string> DeleteAsync(string id, CancellationToken ct);
-    Task<bool> ExistsAsync(string id, CancellationToken ct);
+    Task<Guid> AddAsync(User user, CancellationToken cancellationToken);
+    Task Delete(User user);
+    Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken);
+    Task<PagedResult<User>> GetAll(int pageNumber, int pageSize);
+    Task<User?> GetByLoginAsync(string login, CancellationToken cancellationToken);
+    Task Update(User user);
 }

@@ -1,4 +1,4 @@
-using FitnessTracker.Core.AggregateRoots.Workout;
+using FitnessTracker.Core.AggregateRoots.Workouts;
 using FitnessTracker.Core.Enums;
 using FluentAssertions;
 

@@ -1,6 +1,6 @@
-﻿using FitnessTracker.Core.AggregateRoots.MediaAttachment;
-using FitnessTracker.Core.AggregateRoots.User;
-using FitnessTracker.Core.AggregateRoots.Workout;
+﻿using FitnessTracker.Core.AggregateRoots.MediaAttachments;
+using FitnessTracker.Core.AggregateRoots.Users;
+using FitnessTracker.Core.AggregateRoots.Workouts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.DataAccess;

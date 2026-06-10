@@ -1,6 +1,6 @@
 ﻿using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.User;
+using FitnessTracker.Core.AggregateRoots.Users;
 using FitnessTracker.Core.Exceptions;
 
 namespace FitnessTracker.Business.Services;

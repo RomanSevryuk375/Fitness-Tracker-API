@@ -3,7 +3,7 @@ using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Business.DTOs;
 using FitnessTracker.Business.Services;
 using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.Workout;
+using FitnessTracker.Core.AggregateRoots.Workouts;
 using FitnessTracker.Core.Enums;
 using FitnessTracker.Core.Models;
 using FluentAssertions;

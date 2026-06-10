@@ -2,8 +2,8 @@
 using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Business.DTOs;
 using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.MediaAttachment;
-using FitnessTracker.Core.AggregateRoots.Workout;
+using FitnessTracker.Core.AggregateRoots.MediaAttachments;
+using FitnessTracker.Core.AggregateRoots.Workouts;
 using FitnessTracker.Core.Enums;
 using FitnessTracker.Core.Exceptions;
 using FitnessTracker.Core.Models;

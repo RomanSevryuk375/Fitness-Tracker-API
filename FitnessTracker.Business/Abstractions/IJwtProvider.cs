@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Core.AggregateRoots.User;
+﻿using FitnessTracker.Core.AggregateRoots.Users;
 
 namespace FitnessTracker.Business.Abstractions;
 
