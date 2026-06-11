@@ -1,6 +1,4 @@
-﻿using FitnessTracker.Business.Abstractions;
-using FitnessTracker.Business.DTOs;
-using FitnessTracker.Core.Models;
+﻿using FitnessTracker.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

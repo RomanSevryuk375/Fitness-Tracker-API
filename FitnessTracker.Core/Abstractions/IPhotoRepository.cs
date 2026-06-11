@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Core.AggregateRoots.MediaAttachments;
+﻿using FitnessTracker.Core.AggregateRoots.Workouts;
 
 namespace FitnessTracker.Core.Abstractions;
 

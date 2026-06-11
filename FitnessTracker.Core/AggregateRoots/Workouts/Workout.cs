@@ -1,5 +1,4 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.MediaAttachments;
 using FitnessTracker.Core.AggregateRoots.Users;
 using FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 using FitnessTracker.Core.Enums;
@@ -115,6 +114,19 @@ public sealed class Workout : Entity
         return Result.Success();
     }
 
+    public Result RemoveExercise(Guid exerciseId)
+    {
+        var exercise = _exercises.FirstOrDefault(e => e.Id == exerciseId);
+        if (exercise is null)
+        {
+            return Result.Failure(Error.NotFound<Workout>(
+                "Exercise not found in this workout."));
+        }
+
+        _exercises.Remove(exercise);
+        return Result.Success();
+    }
+
     public Result AddPhoto(Photo photo)
     {
         if (_photos.Count >= PhotoLimit)
@@ -124,6 +136,18 @@ public sealed class Workout : Entity
         }
 
         _photos.Add(photo);
+        return Result.Success();
+    }
+
+    public Result RemovePhoto(Guid photoId)
+    {
+        var photo = _photos.FirstOrDefault(p => p.Id == photoId);
+        if (photo is null)
+        {
+            return Result.Failure(Error.NotFound<Workout>("Photo not found in this workout."));
+        }
+
+        _photos.Remove(photo);
         return Result.Success();
     }
 }

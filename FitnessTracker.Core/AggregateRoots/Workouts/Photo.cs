@@ -1,9 +1,8 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.MediaAttachments.ValueObjects;
-using FitnessTracker.Core.AggregateRoots.Workouts;
+using FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 using Shared.Result;
 
-namespace FitnessTracker.Core.AggregateRoots.MediaAttachments;
+namespace FitnessTracker.Core.AggregateRoots.Workouts;
 
 public sealed class Photo : Entity
 {

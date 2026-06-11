@@ -1,5 +1,3 @@
-using FitnessTracker.Business.Abstractions;
-using FitnessTracker.Business.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessTracker.API.Controllers

@@ -1,5 +1,5 @@
 ﻿using FitnessTracker.Core.Abstractions;
-using FitnessTracker.Core.AggregateRoots.MediaAttachments;
+using FitnessTracker.Core.AggregateRoots.Workouts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTracker.DataAccess.Persistence.Repositories;

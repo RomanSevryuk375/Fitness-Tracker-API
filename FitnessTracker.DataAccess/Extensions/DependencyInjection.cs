@@ -10,8 +10,13 @@ namespace FitnessTracker.DataAccess.Extensions;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        var minioSection = configuration.GetSection(MinioOptions.SectionName);
+        var minioOptions = minioSection.Get<MinioOptions>()
+            ?? throw new InvalidOperationException("MinIO configuration is missing.");
+        services.Configure<MinioOptions>(minioSection);
+
         services.AddDbContext<FitnessDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString(nameof(FitnessDbContext)))

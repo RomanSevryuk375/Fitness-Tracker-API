@@ -1,5 +1,5 @@
-﻿using FitnessTracker.Core.AggregateRoots.MediaAttachments;
-using FitnessTracker.Core.AggregateRoots.MediaAttachments.ValueObjects;
+﻿using FitnessTracker.Core.AggregateRoots.Workouts;
+using FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

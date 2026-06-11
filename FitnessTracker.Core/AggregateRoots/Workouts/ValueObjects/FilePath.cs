@@ -1,6 +1,6 @@
 ﻿using Shared.Result;
 
-namespace FitnessTracker.Core.AggregateRoots.MediaAttachments.ValueObjects;
+namespace FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 
 public readonly record struct FilePath
 {

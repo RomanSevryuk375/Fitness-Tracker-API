@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FitnessTracker.Business.DTOs;
 using FitnessTracker.Core.AggregateRoots.Workouts;
 
 namespace FitnessTracker.Business.MapProfiles;

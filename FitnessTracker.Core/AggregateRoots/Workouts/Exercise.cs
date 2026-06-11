@@ -39,6 +39,11 @@ public sealed class Exercise : Entity
         return Result<Exercise>.Success(exercise);
     }
 
+    public void Rename(ExerciseName newName)
+    {
+        Name = newName;
+    }
+
     public Result AddSet(Set set)
     {
         if (_sets.Count >= SetLimit)
