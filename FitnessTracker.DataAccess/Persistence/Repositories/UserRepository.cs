@@ -21,6 +21,12 @@ public class UserRepository(FitnessDbContext context) : IUserRepository
             .FirstOrDefaultAsync(u => u.Login == login, cancellationToken);
     }
 
+    public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+    }
+
     public async Task<Guid> AddAsync(User user, CancellationToken cancellationToken)
     {
         await context.Users.AddAsync(user, cancellationToken);

@@ -10,5 +10,6 @@ public interface IUserRepository
     Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken);
     Task<PagedResult<User>> GetAll(int pageNumber, int pageSize);
     Task<User?> GetByLoginAsync(string login, CancellationToken cancellationToken);
+    Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
     Task Update(User user);
 }

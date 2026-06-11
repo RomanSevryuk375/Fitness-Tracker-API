@@ -9,7 +9,9 @@ public class WorkoutProfile : Profile
     public WorkoutProfile ()
     {
         CreateMap<Set, SetDto>();
+
         CreateMap<Exercise, ExerciseDto>();
+
         CreateMap<Workout, WorkoutDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()))
                 .ForMember(dest => dest.ProgressPhotos, opt =>

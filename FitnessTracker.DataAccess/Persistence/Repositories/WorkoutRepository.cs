@@ -38,13 +38,13 @@ public class WorkoutRepository(FitnessDbContext context) : IWorkoutRepository
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(Workout workout)
+    public Task Delete(Workout workout)
     {
         context.Workouts.Remove(workout);
         return Task.CompletedTask;
     }
 
-    public Task UpdateAsync(Workout workout)
+    public Task Update(Workout workout)
     {
         context.Workouts.Update(workout);
         return Task.CompletedTask;

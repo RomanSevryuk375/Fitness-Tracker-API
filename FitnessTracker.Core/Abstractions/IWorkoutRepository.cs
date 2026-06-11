@@ -6,12 +6,12 @@ namespace FitnessTracker.Core.Abstractions;
 public interface IWorkoutRepository
 {
     Task AddAsync(Workout workout, CancellationToken cancellationToken);
-    Task DeleteAsync(Workout workout);
+    Task Delete(Workout workout);
     Task<Workout?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<List<Workout>> GetByUserIdAsync(
         Guid userId, 
         WorkoutFilter filter, 
         CancellationToken cancellationToken);
     Task<int> GetCountAsync(Guid userId, WorkoutFilter filter, CancellationToken cancellationToken);
-    Task UpdateAsync(Workout workout);
+    Task Update(Workout workout);
 }
