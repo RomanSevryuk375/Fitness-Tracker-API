@@ -50,11 +50,11 @@ public class WorkoutRepository(FitnessDbContext context) : IWorkoutRepository
         return Task.CompletedTask;
     }
 
-    public async Task<Workout?> GetByIdAsync(Guid id, CancellationToken ct)
+    public async Task<Workout?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await context.Workouts
             .Include(x => x.Exercises).ThenInclude(e => e.Sets)
             .Include(x => x.Photos)
-            .FirstOrDefaultAsync(x => x.Id == id, ct);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

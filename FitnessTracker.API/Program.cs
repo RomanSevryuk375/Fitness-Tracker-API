@@ -6,7 +6,7 @@ using FitnessTracker.Business.Services;
 using FitnessTracker.Business.Validators;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.DataAccess;
-using FitnessTracker.DataAccess.Extentions;
+using FitnessTracker.DataAccess.Minio;
 using FitnessTracker.DataAccess.Persistence.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -49,12 +49,6 @@ builder.Services.AddSwaggerGen(opt =>
 });
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(WorkoutProfile).Assembly));
 
-builder.Services.AddDbContext<FitnessDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(FitnessDbContext)))
-           .UseSnakeCaseNamingConvention();
-});
-
 var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -76,12 +70,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateWorkoutRequestValidat
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddScoped<IMyPasswordHasher, MyPasswordHasher>();
-builder.Services.AddScoped<IFileService, MinioFileService>();
 
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
-builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 var app = builder.Build();
 
