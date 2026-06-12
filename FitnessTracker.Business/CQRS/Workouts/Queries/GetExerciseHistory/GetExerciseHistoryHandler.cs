@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using FitnessTracker.Core.Abstractions;
+using MediatR;
 using Shared.Result;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Queries.GetExerciseHistory;
 
 public sealed class GetExerciseHistoryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    : IRequestHandler<GetExerciseHistoryQuery, Result<IReadOnlyList<ExerciseHistoryItemDto>>>
 {
     public async Task<Result<IReadOnlyList<ExerciseHistoryItemDto>>> Handle(
         GetExerciseHistoryQuery request,
