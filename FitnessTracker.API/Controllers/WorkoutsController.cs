@@ -1,4 +1,14 @@
-﻿using FitnessTracker.Core.Models;
+﻿using FitnessTracker.Business.CQRS.Workouts.Commands.AddExerciseToWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Commands.AddSetToExercise;
+using FitnessTracker.Business.CQRS.Workouts.Commands.AttachPhotoToWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Commands.CreateWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Commands.DeleteWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Commands.RenameExercise;
+using FitnessTracker.Business.CQRS.Workouts.Commands.UpdateWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Queries.GetExerciseHistory;
+using FitnessTracker.Business.CQRS.Workouts.Queries.GetWorkoutById;
+using FitnessTracker.Business.CQRS.Workouts.Queries.GetWorkoutList;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -8,71 +18,164 @@ namespace FitnessTracker.API.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/workouts")]
-public class WorkoutsController : ControllerBase
+public sealed class WorkoutsController(ISender sender) : ControllerBase
 {
-    private readonly IWorkoutService _workoutService;
-
-    public WorkoutsController(IWorkoutService workoutService)
-    {
-        _workoutService = workoutService;
-    }
-    private string CurrentUserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-        ?? throw new UnauthorizedAccessException();
-
-    [HttpPost]
-    public async Task<IActionResult> CreateWorkout([FromForm] CreateWorkoutRequest request, List<IFormFile> photos, CancellationToken ct)
-    {
-        var fileModels = photos.Select(p => new FileModel(
-            p.OpenReadStream(),
-            p.FileName,
-            p.ContentType)).ToList();
-
-        var result = await _workoutService.CreateAsync(CurrentUserId, request, fileModels, ct);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
-    }
+    private Guid CurrentUserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     [HttpGet]
-    public async Task<ActionResult<List<WorkoutDto>>> GetAll([FromQuery] WorkoutFilter filter, CancellationToken ct)
+    public async Task<IActionResult> GetList(
+        [FromQuery] GetWorkoutListQuery query, 
+        CancellationToken cancellationToken)
     {
-        var workouts = await _workoutService.GetUserWorkoutsAsync(CurrentUserId, filter, ct);
-        var totalCount = await _workoutService.GetCountAsync(CurrentUserId, filter, ct);
+        var result = await sender.Send(
+            query with { UserId = CurrentUserId }, cancellationToken);
 
-        Response.Headers.Append("x-total-count", totalCount.ToString());
-
-        return Ok(workouts);
+        return Ok(result.Value);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<WorkoutDto>> GetById(string id, CancellationToken ct)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(
+        Guid id, 
+        CancellationToken cancellationToken)
     {
-        var workout = await _workoutService.GetByIdAsync(CurrentUserId, id, ct);
-        if (workout == null)
+        var result = await sender.Send(
+            new GetWorkoutByIdQuery 
+            { 
+                UserId = CurrentUserId, 
+                WorkoutId = id 
+            }, cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(
+        [FromBody] CreateWorkoutCommand command, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            command with { UserId = CurrentUserId }, cancellationToken);
+
+        return result.IsSuccess 
+            ? CreatedAtAction(
+                nameof(GetById), 
+                new { id = result.Value }, 
+                result.Value) 
+            : BadRequest(result.Error);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(
+        Guid id, 
+        [FromBody] UpdateWorkoutCommand command, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            command with { UserId = CurrentUserId, WorkoutId = id }, cancellationToken);
+
+        return result.IsSuccess 
+            ? NoContent() 
+            : BadRequest(result.Error);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(
+        Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new DeleteWorkoutCommand 
+        { 
+            UserId = CurrentUserId, 
+            WorkoutId = id 
+        }, cancellationToken);
+
+        return result.IsSuccess 
+            ? NoContent() 
+            : BadRequest(result.Error);
+    }
+
+
+    [HttpPost("{id:guid}/exercises")]
+    public async Task<IActionResult> AddExercise(
+        Guid id, 
+        [FromBody] AddExerciseToWorkoutCommand command, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            command with { UserId = CurrentUserId, WorkoutId = id }, cancellationToken);
+
+        return result.IsSuccess 
+            ? Ok() 
+            : BadRequest(result.Error);
+    }
+
+    [HttpPatch("{id:guid}/exercises/{exerciseId:guid}/rename")]
+    public async Task<IActionResult> RenameExercise(
+        Guid id, 
+        Guid exerciseId, 
+        [FromBody] string newName, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new RenameExerciseCommand 
+        { 
+            UserId = CurrentUserId, 
+            WorkoutId = id, 
+            ExerciseId = exerciseId, 
+            NewName = newName 
+        }, cancellationToken);
+
+        return result.IsSuccess 
+            ? Ok() 
+            : BadRequest(result.Error);
+    }
+
+    [HttpPost("{id:guid}/exercises/{exerciseId:guid}/sets")]
+    public async Task<IActionResult> AddSet(
+        Guid id, 
+        Guid exerciseId, 
+        [FromBody] AddSetToExerciseCommand command, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(command with 
+        { 
+            UserId = CurrentUserId, 
+            WorkoutId = id, 
+            ExerciseId = exerciseId 
+        }, cancellationToken);
+
+        return result.IsSuccess 
+            ? Ok() 
+            : BadRequest(result.Error);
+    }
+
+    [HttpGet("history")]
+    public async Task<IActionResult> GetHistory(
+        [FromQuery] GetExerciseHistoryQuery query, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            query with { UserId = CurrentUserId }, cancellationToken);
+
+        return Ok(result.Value);
+    }
+
+    [HttpPost("{id:guid}/photos")]
+    public async Task<IActionResult> UploadPhoto(
+        Guid id, 
+        IFormFile file, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new AttachPhotoToWorkoutCommand
         {
-            return NotFound();
-        }
+            UserId = CurrentUserId,
+            WorkoutId = id,
+            Content = file.OpenReadStream(),
+            FileName = file.FileName,
+            ContentType = file.ContentType
+        }, cancellationToken);
 
-        return Ok(workout);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] WorkoutUpdateModel model, CancellationToken ct)
-    {
-        await _workoutService.UpdateWorkout(CurrentUserId, id, model, ct);
-        return NoContent(); 
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id, CancellationToken ct)
-    {
-        await _workoutService.DeleteWorkout(CurrentUserId, id, ct);
-        return NoContent(); 
-    }
-
-    [HttpGet("{id}/photos/{photoId}")]
-    public async Task<IActionResult> GetPhoto(string id, string fileName, CancellationToken ct)
-    {
-        var (stream, contentType) = await _workoutService.GetPhotoAsync(CurrentUserId, id, fileName, ct);
-        return File(stream, contentType, fileName);
+        return result.IsSuccess 
+            ? Ok() 
+            : BadRequest(result.Error);
     }
 }

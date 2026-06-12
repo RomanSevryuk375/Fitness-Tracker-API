@@ -1,30 +1,35 @@
+using FitnessTracker.Business.CQRS.Users.Commands.RegisterUser;
+using FitnessTracker.Business.CQRS.Users.Queries.LoginUser;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FitnessTracker.API.Controllers
+namespace FitnessTracker.API.Controllers;
+
+[ApiController]
+[Route("api/auth")]
+public sealed class AuthController(ISender sender) : ControllerBase
 {
-    [ApiController]
-    [Route("api/auth")]
-    public class AuthController : ControllerBase
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterUserCommand command, 
+        CancellationToken cancellationToken)
     {
-        private readonly IAuthService _authService;
+        var result = await sender.Send(command, cancellationToken);
 
-        public AuthController(IAuthService authService)
-        {
-            _authService = authService;
-        }
+        return result.IsSuccess 
+            ? Ok() 
+            : BadRequest(result.Error);
+    }
 
-        [HttpPost("users")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
-        {
-            await _authService.RegisterUserAsync(request.Login, request.Password, ct);
-            return Created();
-        }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginUserQuery query, 
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(query, cancellationToken);
 
-        [HttpPost("token")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginRequest request, CancellationToken ct)
-        {
-            var token = await _authService.LoginUserAsync(request.Login, request.Password, ct);
-            return Ok(new { Token = token });
-        }
+        return result.IsSuccess 
+            ? Ok(new { Token = result.Value }) 
+            : Unauthorized(result.Error);
     }
 }

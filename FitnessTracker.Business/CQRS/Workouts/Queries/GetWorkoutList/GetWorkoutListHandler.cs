@@ -21,7 +21,7 @@ public sealed class GetWorkoutListHandler(ISqlConnectionFactory connectionFactor
                 w.type AS Type, 
                 w.duration AS Duration, 
                 w.calories AS CaloriesBurned, 
-                w.workout_date AS WorkoutDate
+                w.workout_date AS WorkoutDate,
                 COUNT(e.Id) AS ExercisesCount
             FROM workouts w
             LEFT JOIN exercises e ON w.Id = e.workoutId
@@ -30,8 +30,8 @@ public sealed class GetWorkoutListHandler(ISqlConnectionFactory connectionFactor
             GROUP BY 
                 w.id, w.title, w.type, w.duration, w.calories_burned, w.workout_date
             ORDER BY w.workout_date DESC
-            OFFSET = @Skip
-            LIMIT = @Take
+            OFFSET @Skip
+            LIMIT @Take
             """;
 
         var typeString = request.Type?.ToString();
