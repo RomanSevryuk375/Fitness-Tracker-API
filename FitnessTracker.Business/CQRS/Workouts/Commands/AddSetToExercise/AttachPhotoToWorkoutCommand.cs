@@ -2,7 +2,7 @@
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.AddSetToExercise;
 
-public sealed record AddSetToExerciseCommand : ICommand
+public sealed record AddSetToExerciseCommand : ICommand, IUserBoundWorkout
 {
     public Guid UserId { get; init; }
     public Guid WorkoutId { get; init; }

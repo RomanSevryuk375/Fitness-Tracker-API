@@ -2,7 +2,7 @@
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.RemoveSetFromExercise;
 
-public sealed record RemoveSetFromExerciseCommand : ICommand
+public sealed record RemoveSetFromExerciseCommand : ICommand, IUserBoundWorkout
 {
     public Guid UserId { get; init; }
     public Guid WorkoutId { get; init; }

@@ -2,7 +2,7 @@
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.UpdateSet;
 
-public sealed record UpdateSetCommand : ICommand
+public sealed record UpdateSetCommand : ICommand, IUserBoundWorkout 
 {
     public Guid UserId { get; init; }
     public Guid WorkoutId { get; init; }

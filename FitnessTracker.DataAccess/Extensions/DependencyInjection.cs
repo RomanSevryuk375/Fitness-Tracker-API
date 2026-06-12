@@ -1,5 +1,6 @@
 ﻿using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Abstractions;
+using FitnessTracker.DataAccess.Factories;
 using FitnessTracker.DataAccess.Minio;
 using FitnessTracker.DataAccess.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IPhotoRepository, PhotoRepository>();
 
+        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

@@ -3,7 +3,7 @@ using FitnessTracker.Core.Enums;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.UpdateWorkout;
 
-public sealed record UpdateWorkoutCommand : ICommand<Guid>
+public sealed record UpdateWorkoutCommand : ICommand<Guid>, IUserBoundWorkout
 {
     public Guid UserId { get; init; }
     public Guid WorkoutId { get; init; }

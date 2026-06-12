@@ -2,7 +2,7 @@
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.RenameExercise;
 
-public sealed record RenameExerciseCommand : ICommand
+public sealed record RenameExerciseCommand : ICommand, IUserBoundWorkout
 {
     public Guid UserId { get; init; }
     public Guid WorkoutId { get; init; }
