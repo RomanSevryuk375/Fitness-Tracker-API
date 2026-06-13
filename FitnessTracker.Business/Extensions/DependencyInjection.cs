@@ -30,8 +30,6 @@ public static class DependencyInjection
 
         services.AddValidatorsFromAssembly(assembly);
 
-        services.AddAutoMapper(config => config.AddMaps(assembly));
-
         return services;
     }
 }

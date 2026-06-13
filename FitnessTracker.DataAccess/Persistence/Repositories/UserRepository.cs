@@ -7,13 +7,13 @@ namespace FitnessTracker.DataAccess.Persistence.Repositories;
 
 public class UserRepository(FitnessDbContext context) : IUserRepository
 {
-    public async Task<PagedResult<User>> GetAll(
-        int pageNumber, int pageSize)
+    public async Task<PagedResult<User>> GetAllAsync(
+        int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
         return await context.Users
             .AsNoTracking()
             .OrderBy(x => x.Id)
-            .ToPagedResultAsync(pageNumber, pageSize);
+            .ToPagedResultAsync(pageNumber, pageSize, cancellationToken);
     }
 
     public async Task<User?> GetByLoginAsync(
