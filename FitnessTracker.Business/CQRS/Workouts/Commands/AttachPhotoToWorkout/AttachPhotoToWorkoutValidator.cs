@@ -2,7 +2,8 @@
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.AttachPhotoToWorkout;
 
-public sealed class AttachPhotoToWorkoutValidator : AbstractValidator<AttachPhotoToWorkoutCommand>
+public sealed class AttachPhotoToWorkoutValidator 
+    : AbstractValidator<AttachPhotoToWorkoutCommand>
 {
     public AttachPhotoToWorkoutValidator()
     {

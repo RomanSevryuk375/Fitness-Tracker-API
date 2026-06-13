@@ -13,7 +13,7 @@ public sealed class AttachPhotoToWorkoutHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<AttachPhotoToWorkoutCommand, Result>
 {
     public async Task<Result> Handle(
-        AttachPhotoToWorkoutCommand request, 
+        AttachPhotoToWorkoutCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);
@@ -38,10 +38,7 @@ public sealed class AttachPhotoToWorkoutHandler(
         }
 
         var uploadResult = await fileService.UploadFileAsync(
-            request.Content,
-            uniqueFileName,
-            request.ContentType,
-            cancellationToken);
+            request.Content, uniqueFileName, request.ContentType, cancellationToken);
         if (uploadResult.IsFailure)
         {
             return Result.Failure(uploadResult.Error);
@@ -67,7 +64,7 @@ public sealed class AttachPhotoToWorkoutHandler(
         catch (Exception)
         {
             await fileService.DeleteFileAsync(uniqueFileName, cancellationToken);
-            throw; 
+            throw;
         }
 
         return Result.Success();

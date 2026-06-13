@@ -2,19 +2,23 @@
 using FitnessTracker.Core.Abstractions;
 using MediatR;
 using Shared.Result;
+using System.Text;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Queries.GetExerciseHistory;
 
-public sealed class GetExerciseHistoryHandler(ISqlConnectionFactory sqlConnectionFactory)
+public sealed class GetExerciseHistoryHandler(
+    ISqlConnectionFactory connectionFactory)
     : IRequestHandler<GetExerciseHistoryQuery, Result<IReadOnlyList<ExerciseHistoryItemDto>>>
 {
     public async Task<Result<IReadOnlyList<ExerciseHistoryItemDto>>> Handle(
         GetExerciseHistoryQuery request,
         CancellationToken cancellationToken)
     {
-        using var connection = sqlConnectionFactory.CreateConnection();
+        using var connection = connectionFactory.CreateConnection();
 
-        const string sql = """
+        var sqlBuilder = new StringBuilder();
+
+        sqlBuilder.AppendLine("""
             SELECT 
                 w.workout_date AS Date,
                 MAX(s.weight) AS MaxWeight,
@@ -25,19 +29,29 @@ public sealed class GetExerciseHistoryHandler(ISqlConnectionFactory sqlConnectio
             INNER JOIN sets s ON e.id = s.exercise_id
             WHERE w.user_id = @UserId 
               AND LOWER(TRIM(e.name)) = LOWER(TRIM(@ExerciseName))
-              AND (@DateFrom IS NULL OR w.workout_date >= @DateFrom)
-              AND (@DateTo IS NULL OR w.workout_date <= @DateTo)
-            GROUP BY w.workout_date
-            ORDER BY w.workout_date DESC
-            """;
+            """);
 
-        var history = await connection.QueryAsync<ExerciseHistoryItemDto>(sql, new
+        if (request.DateFrom.HasValue)
         {
-            UserId = request.UserId,
-            ExerciseName = request.ExerciseName,
-            DateFrom = request.DateFrom,
-            DateTo = request.DateTo
-        });
+            sqlBuilder.AppendLine(" AND w.workout_date >= @DateFrom");
+        }
+
+        if (request.DateTo.HasValue)
+        {
+            sqlBuilder.AppendLine(" AND w.workout_date <= @DateTo");
+        }
+
+        sqlBuilder.AppendLine(" GROUP BY w.workout_date ORDER BY w.workout_date DESC");
+
+        var history = await connection.QueryAsync<ExerciseHistoryItemDto>(
+            sqlBuilder.ToString(),
+            new
+            {
+                UserId = request.UserId,
+                ExerciseName = request.ExerciseName ?? "",
+                DateFrom = request.DateFrom,
+                DateTo = request.DateTo
+            });
 
         return Result<IReadOnlyList<ExerciseHistoryItemDto>>.Success(history.ToList());
     }

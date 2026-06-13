@@ -12,7 +12,7 @@ public sealed class RegisterUserHandler(
     IMyPasswordHasher myPasswordHasher) : IRequestHandler<RegisterUserCommand, Result>
 {
     public async Task<Result> Handle(
-        RegisterUserCommand request, 
+        RegisterUserCommand request,
         CancellationToken cancellationToken)
     {
         var loginResult = Login.Create(request.Login);

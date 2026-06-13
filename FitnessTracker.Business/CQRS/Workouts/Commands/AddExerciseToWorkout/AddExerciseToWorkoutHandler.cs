@@ -8,39 +8,39 @@ namespace FitnessTracker.Business.CQRS.Workouts.Commands.AddExerciseToWorkout;
 
 public sealed class AddExerciseToWorkoutHandler(
     IWorkoutRepository repository,
-    IUnitOfWork unitOfWork) : IRequestHandler<AddExerciseToWorkoutCommand, Result>
+    IUnitOfWork unitOfWork) : IRequestHandler<AddExerciseToWorkoutCommand, Result<Guid>>
 {
-    public async Task<Result> Handle(
-        AddExerciseToWorkoutCommand request, 
+    public async Task<Result<Guid>> Handle(
+        AddExerciseToWorkoutCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);
         if (workout is null)
         {
-            return Result.Failure(Error.NotFound<Workout>(
+            return Result<Guid>.Failure(Error.NotFound<Workout>(
                 $"Workout {request.WorkoutId} not found."));
         }
 
         var nameResult = ExerciseName.Create(request.Name);
-        if(nameResult.IsFailure)
+        if (nameResult.IsFailure)
         {
-            return Result.Failure(nameResult.Error);
+            return Result<Guid>.Failure(nameResult.Error);
         }
 
         var newExercise = Exercise.Create(request.WorkoutId, nameResult.Value);
         if (newExercise.IsFailure)
         {
-            return Result.Failure(newExercise.Error);
+            return Result<Guid>.Failure(newExercise.Error);
         }
 
         var addResult = workout.AddExercise(newExercise.Value);
         if (addResult.IsFailure)
         {
-            return Result.Failure(addResult.Error); 
+            return Result<Guid>.Failure(addResult.Error);
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result<Guid>.Success(newExercise.Value.Id);
     }
 }

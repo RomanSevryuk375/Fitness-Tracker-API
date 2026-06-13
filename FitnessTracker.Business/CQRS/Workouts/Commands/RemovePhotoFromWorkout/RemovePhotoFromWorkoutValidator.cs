@@ -8,9 +8,7 @@ public sealed class RemovePhotoFromWorkoutValidator
     public RemovePhotoFromWorkoutValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-
         RuleFor(x => x.WorkoutId).NotEmpty();
-
         RuleFor(x => x.PhotoId).NotEmpty();
     }
 }

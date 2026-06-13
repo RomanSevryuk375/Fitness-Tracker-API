@@ -10,7 +10,7 @@ public sealed class RemoveSetFromExerciseHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<RemoveSetFromExerciseCommand, Result>
 {
     public async Task<Result> Handle(
-        RemoveSetFromExerciseCommand request, 
+        RemoveSetFromExerciseCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);

@@ -3,7 +3,7 @@
 public sealed record ExerciseHistoryItemDto
 {
     public DateTime Date { get; init; }
-    public double MaxWeight { get; init; }    
-    public double TotalVolume { get; init; } 
-    public int TotalReps { get; init; }      
+    public double MaxWeight { get; init; }
+    public double TotalVolume { get; init; }
+    public int TotalReps { get; init; }
 }

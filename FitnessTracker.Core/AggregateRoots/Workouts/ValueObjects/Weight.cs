@@ -32,5 +32,5 @@ public readonly record struct Weight
     }
 
     public static implicit operator double(Weight weight) => weight.Value;
-    public override string ToString() => $"{Value:0.##} кг";
+    public override string ToString() => $"{Value:0.##} kg";
 }

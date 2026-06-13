@@ -12,7 +12,7 @@ public sealed class RemovePhotoFromWorkoutHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<RemovePhotoFromWorkoutCommand, Result>
 {
     public async Task<Result> Handle(
-        RemovePhotoFromWorkoutCommand request, 
+        RemovePhotoFromWorkoutCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);
@@ -37,7 +37,8 @@ public sealed class RemovePhotoFromWorkoutHandler(
             return Result.Failure(removeResult.Error);
         }
 
-        var deleteFileResult = await fileService.DeleteFileAsync(fileNameInStorage, cancellationToken);
+        var deleteFileResult = await fileService.DeleteFileAsync(
+            fileNameInStorage, cancellationToken);
         if (deleteFileResult.IsFailure)
         {
             return Result.Failure(deleteFileResult.Error);

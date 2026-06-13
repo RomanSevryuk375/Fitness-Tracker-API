@@ -14,6 +14,7 @@ public class PhotoConfiguration : IEntityTypeConfiguration<Photo>
         builder.Property(x => x.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
+            .ValueGeneratedNever()
             .IsRequired();
 
         builder.Property(x => x.WorkoutId)

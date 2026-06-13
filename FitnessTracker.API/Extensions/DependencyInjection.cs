@@ -36,11 +36,11 @@ public static class DependencyInjection
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc(
-                "v1", 
-                new Microsoft.OpenApi.Models.OpenApiInfo 
-                { 
-                    Title = "FitnessTracker API", 
-                    Version = "v1" 
+                "v1",
+                new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "FitnessTracker API",
+                    Version = "v1"
                 });
             opt.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {

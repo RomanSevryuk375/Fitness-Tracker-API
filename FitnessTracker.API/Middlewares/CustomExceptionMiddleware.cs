@@ -1,29 +1,18 @@
-﻿using FitnessTracker.Core.Exceptions;
+﻿namespace FitnessTracker.API.Middlewares;
 
-namespace FitnessTracker.API.Middlewares;
-
-public class CustomExceptionMiddleware
+public class CustomExceptionMiddleware(
+    RequestDelegate next,
+    ILogger<CustomExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<CustomExceptionMiddleware> _logger;
-
-    public CustomExceptionMiddleware(
-        RequestDelegate next,
-        ILogger<CustomExceptionMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
-
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred.");
+            logger.LogError(ex, "An unhandled exception occurred.");
             await HandleException(context, ex);
         }
     }
@@ -34,9 +23,6 @@ public class CustomExceptionMiddleware
 
         var statusCode = exception switch
         {
-            NotFoundException => StatusCodes.Status404NotFound,
-            ConflictException => StatusCodes.Status409Conflict,
-            ValidationException => StatusCodes.Status409Conflict,
             KeyNotFoundException => StatusCodes.Status404NotFound,
             ArgumentException => StatusCodes.Status400BadRequest,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,

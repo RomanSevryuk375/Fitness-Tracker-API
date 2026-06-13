@@ -14,6 +14,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(x => x.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
+            .ValueGeneratedNever()
             .IsRequired();
 
         builder.Property(x => x.WorkoutId)
@@ -24,8 +25,8 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
         builder.Property(x => x.Name)
             .HasColumnName("name")
             .HasConversion(
-                vo => vo.Value, 
-                dbValue => ExerciseName.Create(dbValue).Value 
+                vo => vo.Value,
+                dbValue => ExerciseName.Create(dbValue).Value
             )
             .HasMaxLength(ExerciseName.MaxLength)
             .IsRequired();
@@ -41,7 +42,7 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
 
         builder.HasMany(x => x.Sets)
             .WithOne(x => x.Exercise)
-            .HasForeignKey(x => x.ExerciseId) 
+            .HasForeignKey(x => x.ExerciseId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

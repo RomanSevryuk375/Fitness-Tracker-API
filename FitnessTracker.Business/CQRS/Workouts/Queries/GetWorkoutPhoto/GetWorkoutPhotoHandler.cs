@@ -11,7 +11,7 @@ public sealed class GetWorkoutPhotoHandler(
     IFileService fileService) : IRequestHandler<GetWorkoutPhotoQuery, Result<FileStreamResponse>>
 {
     public async Task<Result<FileStreamResponse>> Handle(
-        GetWorkoutPhotoQuery request, 
+        GetWorkoutPhotoQuery request,
         CancellationToken cancellationToken)
     {
         var photo = await photoRepository.GetByFilePathAsync(request.FileName, cancellationToken);

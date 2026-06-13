@@ -17,12 +17,12 @@ public abstract class Entity : IEquatable<Entity>
             return false;
         }
 
-        if(ReferenceEquals(this, other))
+        if (ReferenceEquals(this, other))
         {
             return true;
         }
 
-        if(GetType() != other.GetType())
+        if (GetType() != other.GetType())
         {
             return false;
         }

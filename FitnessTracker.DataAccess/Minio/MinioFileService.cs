@@ -30,9 +30,9 @@ public sealed class MinioFileService(IAmazonS3 s3Client, IOptions<MinioOptions> 
     }
 
     public async Task<Result<string>> UploadFileAsync(
-        Stream fileStream, 
-        string fileName, 
-        string contentType, 
+        Stream fileStream,
+        string fileName,
+        string contentType,
         CancellationToken cancellationToken)
     {
         try

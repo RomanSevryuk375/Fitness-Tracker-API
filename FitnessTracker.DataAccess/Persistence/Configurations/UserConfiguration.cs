@@ -14,6 +14,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(t => t.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
+            .ValueGeneratedNever()
             .IsRequired();
 
         builder.Property(x => x.Login)
@@ -36,7 +37,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at")
-            .IsRequired(); 
+            .IsRequired();
 
         builder.HasMany(x => x.Workouts)
             .WithOne(x => x.User)

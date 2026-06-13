@@ -16,13 +16,13 @@ public sealed class Set : Entity
     private Set(
         Guid id,
         Guid exerciseId,
-        Repetitions repetitions,
+        Repetitions reps,
         Weight weight,
         DateTime createdAt)
     {
         Id = id;
         ExerciseId = exerciseId;
-        Reps = repetitions;
+        Reps = reps;
         Weight = weight;
         CreatedAt = createdAt;
     }
@@ -32,7 +32,7 @@ public sealed class Set : Entity
         var set = new Set(
             id: Guid.NewGuid(),
             exerciseId,
-            repetitions: reps,
+            reps: reps,
             weight,
             createdAt: DateTime.UtcNow);
 

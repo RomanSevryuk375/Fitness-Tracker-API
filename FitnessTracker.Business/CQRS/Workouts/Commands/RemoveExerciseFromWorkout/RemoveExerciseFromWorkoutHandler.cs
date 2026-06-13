@@ -10,7 +10,7 @@ public sealed class RemoveExerciseFromWorkoutHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<RemoveExerciseFromWorkoutCommand, Result>
 {
     public async Task<Result> Handle(
-        RemoveExerciseFromWorkoutCommand request, 
+        RemoveExerciseFromWorkoutCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);

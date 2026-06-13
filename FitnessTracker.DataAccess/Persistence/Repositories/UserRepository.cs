@@ -7,7 +7,8 @@ namespace FitnessTracker.DataAccess.Persistence.Repositories;
 
 public class UserRepository(FitnessDbContext context) : IUserRepository
 {
-    public async Task<PagedResult<User>> GetAll(int pageNumber, int pageSize)
+    public async Task<PagedResult<User>> GetAll(
+        int pageNumber, int pageSize)
     {
         return await context.Users
             .AsNoTracking()
@@ -15,26 +16,30 @@ public class UserRepository(FitnessDbContext context) : IUserRepository
             .ToPagedResultAsync(pageNumber, pageSize);
     }
 
-    public async Task<User?> GetByLoginAsync(string login, CancellationToken cancellationToken)
+    public async Task<User?> GetByLoginAsync(
+        string login, CancellationToken cancellationToken)
     {
         return await context.Users
             .FirstOrDefaultAsync(u => u.Login == login, cancellationToken);
     }
 
-    public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(
+        Guid userId, CancellationToken cancellationToken)
     {
         return await context.Users
             .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
-    public async Task<Guid> AddAsync(User user, CancellationToken cancellationToken)
+    public async Task<Guid> AddAsync(
+        User user, CancellationToken cancellationToken)
     {
         await context.Users.AddAsync(user, cancellationToken);
 
         return user.Id;
     }
 
-    public async Task<bool> ExistsAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<bool> ExistsAsync(
+        Guid userId, CancellationToken cancellationToken)
     {
         return await context.Users
             .AsNoTracking()

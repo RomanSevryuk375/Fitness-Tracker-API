@@ -26,7 +26,7 @@ public readonly record struct Login
         }
 
         var trimmedLogin = login.Trim();
-            
+
         if (trimmedLogin.Length < MinLength || trimmedLogin.Length > MaxLength)
         {
             return Result<Login>.Failure(Error.Validation<Login>(

@@ -15,13 +15,13 @@ public readonly record struct WorkoutTitle
 
     public static Result<WorkoutTitle> Create(string title)
     {
-        if(string.IsNullOrWhiteSpace(title))
+        if (string.IsNullOrWhiteSpace(title))
         {
             return Result<WorkoutTitle>.Failure(Error.Validation<WorkoutTitle>(
                 "Login can not be empty"));
         }
 
-        if(title.Length < 128)
+        if (title.Length > MaxLength)
         {
             return Result<WorkoutTitle>.Failure(Error.Validation<WorkoutTitle>(
                 $"Workout title should be shorter then {MaxLength} symbols"));

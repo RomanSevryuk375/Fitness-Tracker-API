@@ -11,7 +11,9 @@ public sealed class DeleteWorkoutHandler(
     IFileService fileService,
     IUnitOfWork unitOfWork) : IRequestHandler<DeleteWorkoutCommand, Result>
 {
-    public async Task<Result> Handle(DeleteWorkoutCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        DeleteWorkoutCommand request,
+        CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);
         if (workout is null)
@@ -22,7 +24,8 @@ public sealed class DeleteWorkoutHandler(
 
         foreach (var photo in workout.Photos)
         {
-            var deleteFileResult = await fileService.DeleteFileAsync(photo.FilePath.Value, cancellationToken);
+            var deleteFileResult = await fileService.DeleteFileAsync(
+                photo.FilePath.Value, cancellationToken);
             if (deleteFileResult.IsFailure)
             {
                 return Result.Failure(deleteFileResult.Error);

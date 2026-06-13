@@ -8,9 +8,7 @@ public sealed class RenameExerciseValidator : AbstractValidator<RenameExerciseCo
     public RenameExerciseValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-
         RuleFor(x => x.WorkoutId).NotEmpty();
-
         RuleFor(x => x.ExerciseId).NotEmpty();
 
         RuleFor(x => x.NewName)

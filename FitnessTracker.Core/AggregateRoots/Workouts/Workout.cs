@@ -144,7 +144,8 @@ public sealed class Workout : Entity
         var photo = _photos.FirstOrDefault(p => p.Id == photoId);
         if (photo is null)
         {
-            return Result.Failure(Error.NotFound<Workout>("Photo not found in this workout."));
+            return Result.Failure(Error.NotFound<Workout>(
+                "Photo not found in this workout."));
         }
 
         _photos.Remove(photo);

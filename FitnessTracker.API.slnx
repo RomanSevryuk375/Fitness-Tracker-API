@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="../Shared/Shared.csproj" Id="82677c9a-93b3-4b8a-9337-e5d0537e5f8e" />
+  <Project Path="Shared/Shared.csproj" Id="82677c9a-93b3-4b8a-9337-e5d0537e5f8e" />
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
@@ -7,5 +7,4 @@
   <Project Path="FitnessTracker.Business/FitnessTracker.Business.csproj" />
   <Project Path="FitnessTracker.Core/FitnessTracker.Core.csproj" />
   <Project Path="FitnessTracker.DataAccess/FitnessTracker.DataAccess.csproj" />
-  <Project Path="FitnessTracker.Tests/FitnessTracker.Tests.csproj" />
 </Solution>

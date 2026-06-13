@@ -8,14 +8,13 @@ using System.Text;
 
 namespace FitnessTracker.Business.Secure;
 
-public class JwtProvider : IJwtProvider
+public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
 {
-    private readonly JwtOptions _options;
+    private readonly JwtOptions _options = options.Value;
 
-    public JwtProvider(IOptions<JwtOptions> options) => _options = options.Value;
     public string GenerateToken(User user)
     {
-        Claim[] claims = [new(ClaimTypes.NameIdentifier, user.Id)];
+        Claim[] claims = [new(ClaimTypes.NameIdentifier, user.Id.ToString())];
 
         var singinCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),

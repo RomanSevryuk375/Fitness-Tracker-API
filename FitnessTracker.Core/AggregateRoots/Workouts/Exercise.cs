@@ -13,7 +13,7 @@ public sealed class Exercise : Entity
     public Guid WorkoutId { get; private set; }
     public ExerciseName Name { get; private set; }
 
-    public IReadOnlyCollection<Set> Sets  => _sets.AsReadOnly();
+    public IReadOnlyCollection<Set> Sets => _sets.AsReadOnly();
     public Workout? Workout { get; private set; }
 
     private Exercise(

@@ -3,7 +3,7 @@ using Shared.Result;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Queries.GetExerciseHistory;
 
-public sealed record GetExerciseHistoryQuery 
+public sealed record GetExerciseHistoryQuery
     : IQuery<Result<IReadOnlyList<ExerciseHistoryItemDto>>>
 {
     public Guid UserId { get; init; }

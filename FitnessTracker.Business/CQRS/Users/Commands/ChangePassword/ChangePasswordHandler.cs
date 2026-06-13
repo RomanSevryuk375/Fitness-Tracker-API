@@ -13,7 +13,7 @@ public sealed class ChangePasswordHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<ChangePasswordCommand, Result>
 {
     public async Task<Result> Handle(
-        ChangePasswordCommand request, 
+        ChangePasswordCommand request,
         CancellationToken cancellationToken)
     {
         var user = await repository.GetByIdAsync(request.UserId, cancellationToken);

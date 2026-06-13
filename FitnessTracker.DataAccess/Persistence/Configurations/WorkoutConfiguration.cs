@@ -14,6 +14,7 @@ internal class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
         builder.Property(x => x.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
+            .ValueGeneratedNever()
             .IsRequired();
 
         builder.Property(x => x.UserId)
@@ -41,7 +42,7 @@ internal class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
                 vb => vb.Value,
                 dbValue => WorkoutDuration.Create(dbValue).Value
             )
-            .IsRequired(); 
+            .IsRequired();
 
         builder.Property(x => x.CaloriesBurned)
             .HasColumnName("calories")

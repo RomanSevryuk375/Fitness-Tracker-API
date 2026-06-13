@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace FitnessTracker.Business.CQRS.Users.Commands.RegisterUser;
 
-public sealed class RegisterUserValidator : 
+public sealed class RegisterUserValidator :
     AbstractValidator<RegisterUserCommand>
 {
     private const int MinPasswordLength = 6;

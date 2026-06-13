@@ -7,7 +7,7 @@ public readonly record struct PasswordHash
 {
     public const int HashLength = 60;
 
-    public static readonly Regex BCryptRegex = new(@"^\$2[abxy]\$\d{2}\$[./A-Za-z0-9]{53}$", 
+    public static readonly Regex BCryptRegex = new(@"^\$2[abxy]\$\d{2}\$[./A-Za-z0-9]{53}$",
         RegexOptions.Compiled);
 
     public string Value { get; }
@@ -21,7 +21,8 @@ public readonly record struct PasswordHash
     {
         if (string.IsNullOrWhiteSpace(hash))
         {
-            return Result<PasswordHash>.Failure(Error.Validation<PasswordHash>("Password hash cannot be empty."));
+            return Result<PasswordHash>.Failure(Error.Validation<PasswordHash>(
+                "Password hash cannot be empty."));
         }
 
         if (hash.Length != HashLength)

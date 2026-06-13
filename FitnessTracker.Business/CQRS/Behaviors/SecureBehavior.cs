@@ -6,12 +6,12 @@ using Shared.Result;
 
 namespace FitnessTracker.Business.CQRS.Behaviors;
 
-public sealed class SecureBehavior<TRequest, TResponse>(IWorkoutRepository repository) 
+public sealed class SecureBehavior<TRequest, TResponse>(IWorkoutRepository repository)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>, IUserBoundWorkout
 {
     public async Task<TResponse> Handle(
-        TRequest request, 
-        RequestHandlerDelegate<TResponse> next, 
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         var workout = await repository

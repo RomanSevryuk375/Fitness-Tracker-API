@@ -11,4 +11,4 @@ public sealed record CreateWorkoutCommand : ICommand<Guid>
     public TimeSpan Duration { get; init; }
     public int CaloriesBurned { get; init; }
     public DateTime WorkoutDate { get; init; }
-}   
+}

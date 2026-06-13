@@ -11,7 +11,9 @@ public sealed class LoginUserHandler(
     IMyPasswordHasher myPasswordHasher,
     IJwtProvider jwtProvider) : IRequestHandler<LoginUserQuery, Result<string>>
 {
-    public async Task<Result<string>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(
+        LoginUserQuery request, 
+        CancellationToken cancellationToken)
     {
         var user = await repository.GetByLoginAsync(request.Login, cancellationToken);
         if (user is null)

@@ -11,7 +11,7 @@ public sealed class RenameExerciseHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<RenameExerciseCommand, Result>
 {
     public async Task<Result> Handle(
-        RenameExerciseCommand request, 
+        RenameExerciseCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);

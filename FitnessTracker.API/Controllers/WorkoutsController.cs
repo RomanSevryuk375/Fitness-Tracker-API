@@ -42,13 +42,13 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(
-        Guid id, 
+        Guid id,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new GetWorkoutByIdQuery 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id 
+        var result = await sender.Send(new GetWorkoutByIdQuery
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id
         }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -56,7 +56,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] CreateWorkoutCommand command, 
+        [FromBody] CreateWorkoutCommand command,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
@@ -69,8 +69,8 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(
-        Guid id, 
-        [FromBody] UpdateWorkoutCommand command, 
+        Guid id,
+        [FromBody] UpdateWorkoutCommand command,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
@@ -81,44 +81,45 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(
-        Guid id, 
+        Guid id,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new DeleteWorkoutCommand 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id 
+        var result = await sender.Send(new DeleteWorkoutCommand
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id
         }, cancellationToken);
 
         return this.ToActionResult(result);
     }
 
-    // --- EXERCISES ---
-
     [HttpPost("{id:guid}/exercises")]
     public async Task<IActionResult> AddExercise(
-        Guid id, 
-        [FromBody] AddExerciseToWorkoutCommand command, 
+        Guid id,
+        [FromBody] AddExerciseToWorkoutCommand command,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
             command with { UserId = CurrentUserId, WorkoutId = id }, cancellationToken);
-        return this.ToActionResult(result);
+
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetById), new { id = id }, result.Value)
+            : this.ToActionResult(result);
     }
 
     [HttpPatch("{id:guid}/exercises/{exerciseId:guid}/rename")]
     public async Task<IActionResult> RenameExercise(
-        Guid id, 
-        Guid exerciseId, 
-        [FromBody] string newName, 
+        Guid id,
+        Guid exerciseId,
+        [FromBody] string newName,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RenameExerciseCommand 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id, 
-            ExerciseId = exerciseId, 
-            NewName = newName 
+        var result = await sender.Send(new RenameExerciseCommand
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id,
+            ExerciseId = exerciseId,
+            NewName = newName
         }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -126,15 +127,15 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpDelete("{id:guid}/exercises/{exerciseId:guid}")]
     public async Task<IActionResult> RemoveExercise(
-        Guid id, 
-        Guid exerciseId, 
+        Guid id,
+        Guid exerciseId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemoveExerciseFromWorkoutCommand 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id, 
-            ExerciseId = exerciseId 
+        var result = await sender.Send(new RemoveExerciseFromWorkoutCommand
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id,
+            ExerciseId = exerciseId
         }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -142,7 +143,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpGet("history")]
     public async Task<IActionResult> GetHistory(
-        [FromQuery] GetExerciseHistoryQuery query, 
+        [FromQuery] GetExerciseHistoryQuery query,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
@@ -153,32 +154,34 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpPost("{id:guid}/exercises/{exerciseId:guid}/sets")]
     public async Task<IActionResult> AddSet(
-        Guid id, 
-        Guid exerciseId, 
-        [FromBody] AddSetToExerciseCommand command, 
+        Guid id,
+        Guid exerciseId,
+        [FromBody] AddSetToExerciseCommand command,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
             command with { UserId = CurrentUserId, WorkoutId = id, ExerciseId = exerciseId }, cancellationToken);
 
-        return this.ToActionResult(result);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetById), new { id = id }, result.Value)
+            : this.ToActionResult(result);
     }
 
     [HttpPut("{id:guid}/exercises/{exerciseId:guid}/sets/{setId:guid}")]
     public async Task<IActionResult> UpdateSet(
-        Guid id, 
-        Guid exerciseId, 
-        Guid setId, 
-        [FromBody] UpdateSetCommand command, 
+        Guid id,
+        Guid exerciseId,
+        Guid setId,
+        [FromBody] UpdateSetCommand command,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
-            command with 
-            { 
-                UserId = CurrentUserId, 
-                WorkoutId = id, 
-                ExerciseId = exerciseId, 
-                SetId = setId 
+            command with
+            {
+                UserId = CurrentUserId,
+                WorkoutId = id,
+                ExerciseId = exerciseId,
+                SetId = setId
             }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -186,17 +189,17 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpDelete("{id:guid}/exercises/{exerciseId:guid}/sets/{setId:guid}")]
     public async Task<IActionResult> RemoveSet(
-        Guid id, 
-        Guid exerciseId, 
-        Guid setId, 
+        Guid id,
+        Guid exerciseId,
+        Guid setId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemoveSetFromExerciseCommand 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id, 
-            ExerciseId = exerciseId, 
-            SetId = setId 
+        var result = await sender.Send(new RemoveSetFromExerciseCommand
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id,
+            ExerciseId = exerciseId,
+            SetId = setId
         }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -204,8 +207,8 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpPost("{id:guid}/photos")]
     public async Task<IActionResult> UploadPhoto(
-        Guid id, 
-        IFormFile file, 
+        Guid id,
+        IFormFile file,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(new AttachPhotoToWorkoutCommand
@@ -221,10 +224,10 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:guid}/photos/{fileName}")]
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public async Task<IActionResult> GetPhoto(
-        Guid id, 
-        string fileName, 
+        Guid id,
+        string fileName,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(new GetWorkoutPhotoQuery
@@ -245,15 +248,15 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
 
     [HttpDelete("{id:guid}/photos/{photoId:guid}")]
     public async Task<IActionResult> RemovePhoto(
-        Guid id, 
-        Guid photoId, 
+        Guid id,
+        Guid photoId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemovePhotoFromWorkoutCommand 
-        { 
-            UserId = CurrentUserId, 
-            WorkoutId = id, 
-            PhotoId = photoId 
+        var result = await sender.Send(new RemovePhotoFromWorkoutCommand
+        {
+            UserId = CurrentUserId,
+            WorkoutId = id,
+            PhotoId = photoId
         }, cancellationToken);
 
         return this.ToActionResult(result);

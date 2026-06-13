@@ -3,17 +3,20 @@ using System;
 using FitnessTracker.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FitnessTracker.DataAccess.Migrations
+namespace FitnessTracker.DataAccess.Persistence.Migrations
 {
     [DbContext(typeof(FitnessDbContext))]
-    partial class SystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612193538_RefactorEntitiesForDDD")]
+    partial class RefactorEntitiesForDDD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

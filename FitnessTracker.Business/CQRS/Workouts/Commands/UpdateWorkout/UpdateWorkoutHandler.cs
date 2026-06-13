@@ -11,7 +11,7 @@ public sealed class UpdateWorkoutHandler(
     IUnitOfWork unitOfWork) : IRequestHandler<UpdateWorkoutCommand, Result>
 {
     public async Task<Result> Handle(
-        UpdateWorkoutCommand request, 
+        UpdateWorkoutCommand request,
         CancellationToken cancellationToken)
     {
         var workout = await repository.GetByIdAsync(request.WorkoutId, cancellationToken);
@@ -21,29 +21,30 @@ public sealed class UpdateWorkoutHandler(
                 $"Workout {request.WorkoutId} not found."));
         }
 
-        WorkoutTitle? newTitle = request.Title is not null 
-            ? WorkoutTitle.Create(request.Title).Value 
+        WorkoutTitle? newTitle = request.Title is not null
+            ? WorkoutTitle.Create(request.Title).Value
             : null;
 
-        WorkoutDuration? newDuration = request.Duration.HasValue 
+        WorkoutDuration? newDuration = request.Duration.HasValue
             ? WorkoutDuration.Create(request.Duration.Value).Value
             : null;
 
-        Calories? newCalories = request.CaloriesBurned.HasValue 
-            ? Calories.Create(request.CaloriesBurned.Value).Value 
+        Calories? newCalories = request.CaloriesBurned.HasValue
+            ? Calories.Create(request.CaloriesBurned.Value).Value
             : null;
 
-        WorkoutDate? newDate = request.WorkoutDate.HasValue 
-            ? WorkoutDate.Create(request.WorkoutDate.Value, DateTime.UtcNow).Value 
+        WorkoutDate? newDate = request.WorkoutDate.HasValue
+            ? WorkoutDate.Create(request.WorkoutDate.Value, DateTime.UtcNow).Value
             : null;
 
-        var updateResult = workout.Update(newTitle, request.Type, newDuration, newCalories, newDate);
+        var updateResult = workout.Update(
+            newTitle, request.Type, newDuration, newCalories, newDate);
         if (updateResult.IsFailure)
         {
             return Result.Failure(updateResult.Error);
         }
 
-        await repository.Update(workout); 
+        await repository.Update(workout);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

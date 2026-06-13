@@ -38,7 +38,7 @@ public sealed class User : Entity, IAggregateRoot
     public Result UpdateLogin(string newLogin)
     {
         var loginResult = Login.Create(newLogin);
-        if(loginResult.IsFailure)
+        if (loginResult.IsFailure)
         {
             return Result.Failure(loginResult.Error);
         }

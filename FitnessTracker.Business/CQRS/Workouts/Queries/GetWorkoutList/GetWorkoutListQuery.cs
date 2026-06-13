@@ -4,7 +4,7 @@ using Shared.Result;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Queries.GetWorkoutList;
 
-public sealed record GetWorkoutListQuery 
+public sealed record GetWorkoutListQuery
     : IQuery<Result<IReadOnlyList<WorkoutListItemDto>>>
 {
     public Guid UserId { get; init; }

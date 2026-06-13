@@ -14,6 +14,7 @@ public class SetConfiguration : IEntityTypeConfiguration<Set>
         builder.Property(x => x.Id)
             .HasColumnName("id")
             .HasColumnType("uuid")
+            .ValueGeneratedNever()
             .IsRequired();
 
         builder.Property(x => x.ExerciseId)

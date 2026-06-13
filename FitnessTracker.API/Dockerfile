@@ -11,6 +11,8 @@ COPY ["FitnessTracker.API/FitnessTracker.API.csproj", "FitnessTracker.API/"]
 COPY ["FitnessTracker.Business/FitnessTracker.Business.csproj", "FitnessTracker.Business/"]
 COPY ["FitnessTracker.Core/FitnessTracker.Core.csproj", "FitnessTracker.Core/"]
 COPY ["FitnessTracker.DataAccess/FitnessTracker.DataAccess.csproj", "FitnessTracker.DataAccess/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+
 RUN dotnet restore "./FitnessTracker.API/FitnessTracker.API.csproj"
 COPY . .
 WORKDIR "/src/FitnessTracker.API"
