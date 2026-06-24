@@ -1,21 +1,22 @@
 [English](README.md) | [Русский](README.ru.md)
 
-# Fitness Tracker API
+# Fitness Tracker Platform
 
 ![.NET 8](https://img.shields.io/badge/.NET_8.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![React 19](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL_18-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![MinIO](https://img.shields.io/badge/MinIO-C7202C?style=for-the-badge&logo=minio&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![MediatR](https://img.shields.io/badge/MediatR-512BD4?style=for-the-badge)
 
-> **A scalable RESTful API for tracking fitness activities and workouts.**  
-> This project is designed with a strict focus on business logic reliability and performance, demonstrating a deep understanding of Domain-Driven Design (DDD) principles, the CQRS pattern, and Clean Architecture.
+> **A scalable full-stack platform for tracking fitness activities and workouts.**  
+> This project is designed with a strict focus on business logic reliability, performance, and modern user interface integration. It demonstrates a deep understanding of Domain-Driven Design (DDD) principles, the CQRS pattern, Clean Architecture, and Single Page Application (SPA) development.
 
 ---
 
 ## Architectural Patterns and Solutions
 
-This repository serves as a demonstration of proficiency in advanced enterprise design patterns:
+This repository serves as a demonstration of proficiency in advanced enterprise design patterns across the entire stack:
 
 ### 1. Domain-Driven Design (DDD)
 The domain layer (`FitnessTracker.Core`) is completely isolated from the infrastructure and external dependencies.
@@ -35,6 +36,11 @@ The pattern is implemented using `MediatR` alongside a physical separation of da
     *   `ValidationBehavior`: Executes the validation pipeline via `FluentValidation`.
     *   `SecureBehavior`: Restricts access, guaranteeing that a user can only interact with their own workouts (Tenant Isolation).
 
+### 4. Frontend Architecture (React & TypeScript)
+*   **Strictly Typed SPA**: Developed using React 19 and TypeScript, ensuring compile-time safety and robust data models mapping backend DTOs.
+*   **Centralized API Integration**: Uses a configured Axios instance with request interceptors for automatic JWT Bearer token injection across all protected routes.
+*   **Modern Build Tooling & Styling**: Utilizes Vite for rapid module bundling and Tailwind CSS for a utility-first, highly responsive component-based UI design.
+
 ---
 
 ## Technology Stack
@@ -42,12 +48,13 @@ The pattern is implemented using `MediatR` alongside a physical separation of da
 | Layer / Purpose | Technologies |
 | --- | --- |
 | **Backend** | C#, ASP.NET Core Web API 8.0, MediatR, FluentValidation |
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, Axios |
 | **Write (ORM)** | Entity Framework Core 8 |
 | **Read (Micro-ORM)**| Dapper |
 | **Database** | PostgreSQL 18 |
 | **File Storage**| MinIO (S3 API) for storing progress photos |
 | **Security** | JWT Bearer Authentication, BCrypt.Net (hashing) |
-| **Infrastructure** | Docker, Docker Compose |
+| **Infrastructure** | Docker, Docker Compose, Nginx |
 
 ---
 
@@ -87,31 +94,33 @@ The API provides a secure RESTful interface. All routes (except authentication) 
   ],
   "photos": []
 }
-```
 
 </details>
+Local Deployment
 
----
+The project is fully containerized, featuring a multi-stage Docker build for the frontend via Nginx. Running it requires only Docker Desktop.
 
-## Local Deployment
+    Clone the repository:
+    code Bash
 
-The project is fully containerized. Running it requires only [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+    git clone https://github.com/YourUsername/romansevryuk375-fitness-tracker-api.git
+    cd romansevryuk375-fitness-tracker-api
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/YourUsername/romansevryuk375-fitness-tracker-api.git
-   cd romansevryuk375-fitness-tracker-api
-   ```
+    Spin up the infrastructure (PostgreSQL, MinIO) and the application services:
+    code Bash
 
-2. Spin up the infrastructure (PostgreSQL, MinIO) and the application itself:
-   ```bash
-   docker compose up -d --build
-   ```
+    docker compose up -d --build
 
-3. Access the services:
-   * **Swagger UI (API Docs)**: `http://localhost:8090/swagger`
-   * **MinIO Console (S3 Admin)**: `http://localhost:9003`
-     * *Login*: `minio_admin`
-     * *Password*: `minio_password`
+    Access the services:
 
-> Note: Database migrations are applied automatically upon application startup.
+        Web UI (Frontend): http://localhost:3000
+
+        Swagger UI (API Docs): http://localhost:8090/swagger
+
+        MinIO Console (S3 Admin): http://localhost:9003
+
+            Login: minio_admin
+
+            Password: minio_password
+
+    Note: Database migrations are applied automatically upon application startup.
