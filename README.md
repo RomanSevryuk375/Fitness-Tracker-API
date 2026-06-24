@@ -95,32 +95,25 @@ The API provides a secure RESTful interface. All routes (except authentication) 
   "photos": []
 }
 
+```
+
 </details>
 Local Deployment
 
 The project is fully containerized, featuring a multi-stage Docker build for the frontend via Nginx. Running it requires only Docker Desktop.
-
     Clone the repository:
-    code Bash
 
     git clone https://github.com/YourUsername/romansevryuk375-fitness-tracker-api.git
     cd romansevryuk375-fitness-tracker-api
 
-    Spin up the infrastructure (PostgreSQL, MinIO) and the application services:
-    code Bash
+Spin up the infrastructure (PostgreSQL, MinIO) and the application services:
 
     docker compose up -d --build
 
-    Access the services:
-
-        Web UI (Frontend): http://localhost:3000
-
-        Swagger UI (API Docs): http://localhost:8090/swagger
-
-        MinIO Console (S3 Admin): http://localhost:9003
-
-            Login: minio_admin
-
-            Password: minio_password
-
+ Access the services:  
+        Web UI (Frontend): http://localhost:3000  
+        Swagger UI (API Docs): http://localhost:8090/swagger  
+        MinIO Console (S3 Admin): http://localhost:9003  
+            Login: minio_admin  
+            Password: minio_password  
     Note: Database migrations are applied automatically upon application startup.
