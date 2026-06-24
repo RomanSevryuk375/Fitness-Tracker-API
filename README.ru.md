@@ -94,33 +94,22 @@ API предоставляет безопасный RESTful интерфейс. 
   ],
   "photos": []
 }
-
+```
 </details>
 Локальное развертывание
 
 Проект полностью контейнеризирован, включая многоэтапную сборку (multi-stage build) фронтенда для раздачи через Nginx. Для запуска требуется только Docker Desktop.
-
-    Клонируйте репозиторий:
-    code Bash
+Клонируйте репозиторий:  
 
     git clone https://github.com/ВашПользователь/romansevryuk375-fitness-tracker-api.git
     cd romansevryuk375-fitness-tracker-api
-
-    Запустите инфраструктуру (PostgreSQL, MinIO) и само приложение:
-    code Bash
+Запустите инфраструктуру (PostgreSQL, MinIO) и само приложение:  
 
     docker compose up -d --build
-
-    Доступ к сервисам:
-
-        Web UI (Frontend): http://localhost:3000
-
-        Swagger UI (API Docs): http://localhost:8090/swagger
-
-        MinIO Console (S3 Admin): http://localhost:9003
-
-            Login: minio_admin
-
-            Password: minio_password
-
+Доступ к сервисам:  
+        Web UI (Frontend): http://localhost:3000  
+        Swagger UI (API Docs): http://localhost:8090/swagger  
+        MinIO Console (S3 Admin): http://localhost:9003  
+            Login: minio_admin  
+            Password: minio_password  
     Примечание: Миграции базы данных применяются автоматически при старте приложения.
