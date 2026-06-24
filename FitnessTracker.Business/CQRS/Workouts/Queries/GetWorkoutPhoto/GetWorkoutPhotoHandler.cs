@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Business.Abstractions;
+using FitnessTracker.Business.Abstractions;
 using FitnessTracker.Core.Abstractions;
 using FitnessTracker.Core.AggregateRoots.Workouts;
 using MediatR;
@@ -15,10 +15,10 @@ public sealed class GetWorkoutPhotoHandler(
         CancellationToken cancellationToken)
     {
         var photo = await photoRepository.GetByFilePathAsync(request.FileName, cancellationToken);
-        if (photo is null || photo.Workout?.UserId != request.UserId)
+        if (photo is null)
         {
             return Result<FileStreamResponse>.Failure(Error.NotFound<Photo>(
-                "Photo not found or access denied."));
+                "Photo not found."));
         }
 
         var streamResult = await fileService.GetFileAsync(request.FileName, cancellationToken);

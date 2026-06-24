@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using FitnessTracker.Business.CQRS.Workouts.Queries.GetWorkoutById.DTOs;
 using FitnessTracker.Core.Abstractions;
 using MediatR;
@@ -52,6 +52,7 @@ public sealed class GetWorkoutByIdHandler(ISqlConnectionFactory sqlConnectionFac
             .GroupBy(x => x.exerciseid)
             .Select(group => new ExerciseDto
             {
+                Id = group.Key,
                 EserciseName = group.First().esercisename,
                 Sets = group
                         .Where(x => x.reps is not null)

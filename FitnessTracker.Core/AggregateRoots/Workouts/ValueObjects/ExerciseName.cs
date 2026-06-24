@@ -1,10 +1,10 @@
-﻿using Shared.Result;
+using Shared.Result;
 
 namespace FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 
 public sealed class ExerciseName
 {
-    public const int MinLength = 5;
+    public const int MinLength = 2;
     public const int MaxLength = 128;
 
     public string Value { get; }

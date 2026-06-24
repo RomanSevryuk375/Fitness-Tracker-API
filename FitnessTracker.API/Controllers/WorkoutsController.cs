@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Business.CQRS.Workouts.Commands.AddExerciseToWorkout;
+using FitnessTracker.Business.CQRS.Workouts.Commands.AddExerciseToWorkout;
 using FitnessTracker.Business.CQRS.Workouts.Commands.AddSetToExercise;
 using FitnessTracker.Business.CQRS.Workouts.Commands.AttachPhotoToWorkout;
 using FitnessTracker.Business.CQRS.Workouts.Commands.CreateWorkout;
@@ -34,7 +34,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromQuery] GetWorkoutListQuery query,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<IReadOnlyList<WorkoutListItemDto>> result = await sender.Send(
             query with { UserId = CurrentUserId }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -45,7 +45,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         Guid id,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new GetWorkoutByIdQuery
+        Result<WorkoutDetailsDto> result = await sender.Send(new GetWorkoutByIdQuery
         {
             UserId = CurrentUserId,
             WorkoutId = id
@@ -59,7 +59,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] CreateWorkoutCommand command,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<Guid> result = await sender.Send(
             command with { UserId = CurrentUserId }, cancellationToken);
 
         return result.IsSuccess
@@ -73,7 +73,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] UpdateWorkoutCommand command,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<Guid> result = await sender.Send(
             command with { UserId = CurrentUserId, WorkoutId = id }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -84,7 +84,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         Guid id,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new DeleteWorkoutCommand
+        Result result = await sender.Send(new DeleteWorkoutCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id
@@ -99,7 +99,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] AddExerciseToWorkoutCommand command,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<Guid> result = await sender.Send(
             command with { UserId = CurrentUserId, WorkoutId = id }, cancellationToken);
 
         return result.IsSuccess
@@ -114,7 +114,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] string newName,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RenameExerciseCommand
+        Result result = await sender.Send(new RenameExerciseCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id,
@@ -131,7 +131,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         Guid exerciseId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemoveExerciseFromWorkoutCommand
+        Result result = await sender.Send(new RemoveExerciseFromWorkoutCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id,
@@ -146,7 +146,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromQuery] GetExerciseHistoryQuery query,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<IReadOnlyList<ExerciseHistoryItemDto>> result = await sender.Send(
             query with { UserId = CurrentUserId }, cancellationToken);
 
         return this.ToActionResult(result);
@@ -159,7 +159,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] AddSetToExerciseCommand command,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result<Guid> result = await sender.Send(
             command with { UserId = CurrentUserId, WorkoutId = id, ExerciseId = exerciseId }, cancellationToken);
 
         return result.IsSuccess
@@ -175,7 +175,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         [FromBody] UpdateSetCommand command,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(
+        Result result = await sender.Send(
             command with
             {
                 UserId = CurrentUserId,
@@ -194,7 +194,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         Guid setId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemoveSetFromExerciseCommand
+        Result result = await sender.Send(new RemoveSetFromExerciseCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id,
@@ -211,7 +211,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         IFormFile file,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new AttachPhotoToWorkoutCommand
+        Result result = await sender.Send(new AttachPhotoToWorkoutCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id,
@@ -230,16 +230,19 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         string fileName,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new GetWorkoutPhotoQuery
+        var userIdString = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        Guid.TryParse(userIdString, out Guid userId);
+
+        Result<FileStreamResponse> result = await sender.Send(new GetWorkoutPhotoQuery
         {
-            UserId = CurrentUserId,
+            UserId = userId,
             WorkoutId = id,
             FileName = fileName
         }, cancellationToken);
 
         if (result.IsSuccess)
         {
-            var response = result.Value;
+            FileStreamResponse response = result.Value;
             return File(response.Stream, response.ContentType, response.FileName);
         }
 
@@ -252,7 +255,7 @@ public sealed class WorkoutsController(ISender sender) : ControllerBase
         Guid photoId,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(new RemovePhotoFromWorkoutCommand
+        Result result = await sender.Send(new RemovePhotoFromWorkoutCommand
         {
             UserId = CurrentUserId,
             WorkoutId = id,

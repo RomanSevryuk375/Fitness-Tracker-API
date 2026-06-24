@@ -1,4 +1,4 @@
-﻿using FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
+using FitnessTracker.Core.AggregateRoots.Workouts.ValueObjects;
 using FluentValidation;
 
 namespace FitnessTracker.Business.CQRS.Workouts.Commands.CreateWorkout;
@@ -15,7 +15,6 @@ public sealed class CreateWorkoutValidator : AbstractValidator<CreateWorkoutComm
             .MaximumLength(WorkoutTitle.MaxLength);
 
         RuleFor(x => x.Type)
-            .IsInEnum()
-            .NotEmpty();
+            .IsInEnum();
     }
 }

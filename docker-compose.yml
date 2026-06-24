@@ -56,6 +56,16 @@ services:
       minio:
         condition: service_healthy
 
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - fitnesstracker.api
+
 volumes:
   postgres_data:
   minio_data:
